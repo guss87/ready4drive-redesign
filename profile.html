@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Ready4Drive — Perfil</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .profile-hero {
+      background: linear-gradient(160deg, #0D1A14 0%, #0D0F14 100%);
+      padding: var(--space-xl) var(--space-md) var(--space-lg);
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .profile-hero::before {
+      content: '';
+      position: absolute; top: -60px; left: 50%; transform: translateX(-50%);
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(0,194,124,0.15) 0%, transparent 70%);
+    }
+    .profile-avatar-wrap { position: relative; display: inline-block; margin-bottom: 12px; }
+    .profile-avatar {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--brand-primary), var(--brand-blue));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 32px; font-weight: 800;
+      border: 3px solid rgba(0,194,124,0.3);
+    }
+    .profile-edit-badge {
+      position: absolute; bottom: 0; right: 0;
+      width: 26px; height: 26px; border-radius: 50%;
+      background: var(--bg-surface); border: 2px solid var(--bg-base);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .profile-name { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+    .profile-status { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--brand-primary); font-weight: 600; }
+
+    /* SERVICE CARD */
+    .service-card {
+      background: linear-gradient(135deg, rgba(0,194,124,0.12), rgba(0,102,255,0.06));
+      border: 1px solid rgba(0,194,124,0.2);
+      border-radius: var(--radius-lg); padding: var(--space-md);
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: var(--space-md);
+    }
+    .service-label { font-size: 13px; color: var(--text-secondary); font-weight: 600; margin-bottom: 2px; }
+    .service-value { font-size: 18px; font-weight: 800; color: var(--brand-primary); }
+
+    /* INFO ROWS */
+    .info-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 15px var(--space-md);
+      border-bottom: 1px solid var(--border);
+    }
+    .info-row:last-child { border-bottom: none; }
+    .info-label { font-size: 13px; color: var(--text-secondary); font-weight: 600; }
+    .info-value { font-size: 14px; font-weight: 600; }
+
+    /* MENU ITEMS */
+    .menu-item {
+      display: flex; align-items: center; gap: 14px;
+      padding: 16px var(--space-md);
+      border-bottom: 1px solid var(--border);
+      cursor: pointer; transition: var(--transition);
+    }
+    .menu-item:last-child { border-bottom: none; }
+    .menu-item:active { background: var(--bg-surface); }
+    .menu-icon {
+      width: 38px; height: 38px; border-radius: var(--radius-md);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-size: 18px;
+    }
+    .menu-label { font-size: 15px; font-weight: 600; flex: 1; }
+    .menu-arrow { color: var(--text-muted); }
+
+    .logout-btn {
+      width: 100%; padding: 15px; border-radius: var(--radius-md);
+      background: rgba(255,59,59,0.08); border: 1px solid rgba(255,59,59,0.2);
+      color: var(--danger); font-size: 15px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+
+    <header class="topbar">
+      <div class="topbar-logo">
+        <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
+          <rect width="28" height="28" rx="7" fill="#00C27C"/>
+          <path d="M8 14L12 18L20 10" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Ready4Drive
+      </div>
+      <div class="topbar-actions">
+        <button class="topbar-lang">🌐 ES</button>
+      </div>
+    </header>
+
+    <!-- PROFILE HERO -->
+    <div class="profile-hero">
+      <div class="profile-avatar-wrap">
+        <div class="profile-avatar">J</div>
+        <div class="profile-edit-badge">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        </div>
+      </div>
+      <div class="profile-name">JesusC</div>
+      <div class="profile-status">
+        <span class="status-dot online"></span>
+        Cuenta activa
+      </div>
+    </div>
+
+    <div class="page-content" style="padding-top: var(--space-md);">
+
+      <!-- SERVICE STATUS -->
+      <div class="service-card">
+        <div>
+          <div class="service-label">Estado del servicio</div>
+          <div class="service-value">Activo — 9 meses restantes</div>
+        </div>
+        <a href="payments.html" class="btn btn-primary btn-sm" style="width:auto;">Renovar</a>
+      </div>
+
+      <!-- PERSONAL INFO -->
+      <div class="section-header">
+        <span class="section-title">Información personal</span>
+        <button style="color: var(--brand-primary); font-size:13px; font-weight:700;">Editar</button>
+      </div>
+
+      <div class="card mb-md">
+        <div class="info-row">
+          <span class="info-label">Nombre</span>
+          <span class="info-value">JesusC</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Teléfono principal</span>
+          <span class="info-value">+1 (754) 232-6272</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Teléfono notificaciones</span>
+          <span class="info-value">+1 (786) 494-6960</span>
+        </div>
+      </div>
+
+      <!-- MENU -->
+      <div class="section-title mb-md">Configuración</div>
+      <div class="card mb-md">
+        <div class="menu-item" onclick="location.href='settings.html'">
+          <div class="menu-icon" style="background: rgba(0,102,255,0.1);">⚙️</div>
+          <span class="menu-label">Filtros y horarios</span>
+          <svg class="menu-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+        <div class="menu-item" onclick="location.href='invitations.html'">
+          <div class="menu-icon" style="background: rgba(255,107,43,0.1);">🎁</div>
+          <span class="menu-label">Mis referidos</span>
+          <svg class="menu-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+        <div class="menu-item">
+          <div class="menu-icon" style="background: rgba(0,194,124,0.1);">💳</div>
+          <span class="menu-label">Historial de pagos</span>
+          <svg class="menu-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+        <div class="menu-item">
+          <div class="menu-icon" style="background: rgba(255,184,0,0.1);">🔔</div>
+          <span class="menu-label">Notificaciones SMS</span>
+          <svg class="menu-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+        <a href="https://wa.me/19547010640" target="_blank" class="menu-item" style="text-decoration:none; color:inherit;">
+          <div class="menu-icon" style="background: rgba(37,211,102,0.1);">💬</div>
+          <span class="menu-label">Soporte WhatsApp</span>
+          <svg class="menu-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        </a>
+        <div class="menu-item">
+          <div class="menu-icon" style="background: var(--bg-surface);">📄</div>
+          <span class="menu-label">Términos y privacidad</span>
+          <svg class="menu-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+      </div>
+
+      <!-- CHANGE PASSWORD -->
+      <button class="btn btn-ghost mb-md" style="font-size:14px;">
+        🔑 Cambiar contraseña
+      </button>
+
+      <!-- LOGOUT -->
+      <button class="logout-btn" onclick="location.href='index.html'">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Cerrar sesión
+      </button>
+
+    </div>
+
+    <nav class="bottom-nav">
+      <a href="dashboard.html" class="bottom-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Inicio
+      </a>
+      <a href="invitations.html" class="bottom-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Invitar
+      </a>
+      <a href="settings.html" class="bottom-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="16" cy="6" r="2" fill="currentColor"/><circle cx="8" cy="12" r="2" fill="currentColor"/><circle cx="16" cy="18" r="2" fill="currentColor"/></svg>
+        Filtros
+      </a>
+      <a href="payments.html" class="bottom-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        Pagos
+      </a>
+      <a href="profile.html" class="bottom-nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Perfil
+      </a>
+    </nav>
+  </div>
+</body>
+</html>

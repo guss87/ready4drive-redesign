@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Ready4Drive — Pagos</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .page-title { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 4px; }
+    .page-sub { font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; }
+
+    .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: var(--space-md); }
+
+    .plan-card {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-md);
+      cursor: pointer;
+      transition: var(--transition);
+      text-align: center;
+      position: relative;
+    }
+    .plan-card:active { transform: scale(0.96); }
+    .plan-card.selected {
+      border-color: var(--brand-primary);
+      background: rgba(0,194,124,0.08);
+    }
+    .plan-card.popular {
+      border-color: var(--brand-accent);
+    }
+    .popular-badge {
+      position: absolute; top: -11px; left: 50%; transform: translateX(-50%);
+      background: var(--brand-accent);
+      color: white; font-size: 10px; font-weight: 800;
+      padding: 3px 12px; border-radius: var(--radius-full);
+      text-transform: uppercase; letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+    .plan-days { font-size: 32px; font-weight: 800; }
+    .plan-days-label { font-size: 12px; color: var(--text-secondary); font-weight: 600; margin-bottom: 8px; }
+    .plan-price { font-size: 22px; font-weight: 800; color: var(--brand-primary); }
+    .plan-per-day { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+    .plan-check {
+      position: absolute; top: 10px; right: 10px;
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--brand-primary);
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .secure-badge {
+      background: rgba(0,194,124,0.08);
+      border: 1px solid rgba(0,194,124,0.2);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: var(--space-md);
+    }
+    .secure-icon { font-size: 24px; }
+    .secure-text { font-size: 14px; font-weight: 700; color: var(--brand-primary); }
+    .secure-sub { font-size: 12px; color: var(--text-secondary); }
+
+    .payment-form { margin-bottom: var(--space-md); }
+    .card-icon-row { display: flex; gap: 8px; margin-bottom: 12px; }
+    .card-icon { font-size: 20px; }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+
+    <header class="topbar">
+      <div class="topbar-logo">
+        <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
+          <rect width="28" height="28" rx="7" fill="#00C27C"/>
+          <path d="M8 14L12 18L20 10" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Ready4Drive
+      </div>
+      <div class="topbar-actions">
+        <button class="topbar-lang">🌐 ES</button>
+        <div class="topbar-avatar">J</div>
+      </div>
+    </header>
+
+    <div class="page-content">
+
+      <h1 class="page-title">Planes de pago</h1>
+      <p class="page-sub">Elige el plan que mejor se adapte a ti.</p>
+
+      <!-- PLANS -->
+      <div class="pricing-grid">
+        <div class="plan-card" onclick="selectPlan(this, 3, 33.7)" id="plan3">
+          <div class="plan-days">3</div>
+          <div class="plan-days-label">días</div>
+          <div class="plan-price">$33.7</div>
+          <div class="plan-per-day">~$11.2/día</div>
+        </div>
+
+        <div class="plan-card popular selected" onclick="selectPlan(this, 7, 48.17)" id="plan7">
+          <div class="popular-badge">⭐ Más popular</div>
+          <div class="plan-check">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+          </div>
+          <div class="plan-days">7</div>
+          <div class="plan-days-label">días</div>
+          <div class="plan-price">$48.17</div>
+          <div class="plan-per-day">~$6.9/día</div>
+        </div>
+
+        <div class="plan-card" onclick="selectPlan(this, 14, 87.14)" id="plan14">
+          <div class="plan-days">14</div>
+          <div class="plan-days-label">días</div>
+          <div class="plan-price">$87.14</div>
+          <div class="plan-per-day">~$6.2/día</div>
+        </div>
+
+        <div class="plan-card" onclick="selectPlan(this, 30, 159.9)" id="plan30">
+          <div class="popular-badge" style="background: var(--brand-primary);">💰 Mejor valor</div>
+          <div class="plan-days">30</div>
+          <div class="plan-days-label">días</div>
+          <div class="plan-price">$159.9</div>
+          <div class="plan-per-day">~$5.3/día</div>
+        </div>
+      </div>
+
+      <!-- ROI BANNER -->
+      <div style="background: rgba(0,194,124,0.08); border: 1px solid rgba(0,194,124,0.2); border-radius: var(--radius-md); padding: 14px; margin-bottom: var(--space-md); text-align:center;">
+        <div style="font-size:13px; color: var(--text-secondary);">Con el plan de 7 días, un solo bloque de $50 ya</div>
+        <div style="font-size:16px; font-weight:800; color: var(--brand-primary);">paga el servicio completo 💵</div>
+      </div>
+
+      <!-- SECURE -->
+      <div class="secure-badge">
+        <span class="secure-icon">🔒</span>
+        <div>
+          <div class="secure-text">Pago 100% seguro</div>
+          <div class="secure-sub">Tus datos están protegidos con encriptación SSL</div>
+        </div>
+      </div>
+
+      <!-- PAYMENT FORM -->
+      <div class="card card-padded payment-form">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 16px;">
+          <span style="font-size:15px; font-weight:700;">Información de pago</span>
+          <div class="card-icon-row">
+            <span class="card-icon">💳</span>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div class="input-group">
+            <label class="input-label">Número de tarjeta</label>
+            <input type="text" class="input-field" placeholder="1234 5678 9012 3456" inputmode="numeric">
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <div class="input-group">
+              <label class="input-label">Vencimiento</label>
+              <input type="text" class="input-field" placeholder="MM/AA">
+            </div>
+            <div class="input-group">
+              <label class="input-label">CVV</label>
+              <input type="text" class="input-field" placeholder="123" inputmode="numeric">
+            </div>
+          </div>
+          <div class="input-group">
+            <label class="input-label">Nombre en la tarjeta</label>
+            <input type="text" class="input-field" placeholder="JESUS CAMACHO">
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" style="font-size:16px; padding:16px;" id="payBtn">
+        🔒 Pagar $48.17 — 7 días
+      </button>
+
+      <p style="font-size:12px; color: var(--text-muted); text-align:center; margin-top:12px;">
+        Al pagar aceptas los Términos de Servicio. Sin renovación automática.
+      </p>
+
+    </div>
+
+    <nav class="bottom-nav">
+      <a href="dashboard.html" class="bottom-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Inicio
+      </a>
+      <a href="invitations.html" class="bottom-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Invitar
+      </a>
+      <a href="settings.html" class="bottom-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="16" cy="6" r="2" fill="currentColor"/><circle cx="8" cy="12" r="2" fill="currentColor"/><circle cx="16" cy="18" r="2" fill="currentColor"/></svg>
+        Filtros
+      </a>
+      <a href="payments.html" class="bottom-nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        Pagos
+      </a>
+      <a href="profile.html" class="bottom-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Perfil
+      </a>
+    </nav>
+  </div>
+
+  <script>
+    function selectPlan(el, days, price) {
+      document.querySelectorAll('.plan-card').forEach(c => {
+        c.classList.remove('selected');
+        const chk = c.querySelector('.plan-check');
+        if (chk) chk.remove();
+      });
+      el.classList.add('selected');
+      const check = document.createElement('div');
+      check.className = 'plan-check';
+      check.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>`;
+      el.appendChild(check);
+      document.getElementById('payBtn').textContent = `🔒 Pagar $${price} — ${days} días`;
+    }
+  </script>
+</body>
+</html>

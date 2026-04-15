@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Ready4Drive — Filtros</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .page-title { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 4px; }
+    .page-sub { font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; }
+
+    /* DAY GRID */
+    .days-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: var(--space-md); }
+
+    .day-card {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      min-height: 80px;
+    }
+    .day-card:active { transform: scale(0.96); }
+    .day-card.enabled {
+      border-color: var(--brand-primary);
+      background: rgba(0,194,124,0.06);
+    }
+    .day-card.disabled-day { opacity: 0.6; }
+
+    .day-name { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .day-time { font-size: 11px; color: var(--text-secondary); line-height: 1.4; }
+    .day-disabled-label { font-size: 11px; color: var(--text-muted); }
+    .day-check {
+      position: absolute; top: 10px; right: 10px;
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--brand-primary);
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* WAREHOUSE LIST */
+    .warehouse-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px var(--space-md);
+      border-bottom: 1px solid var(--border);
+    }
+    .warehouse-item:last-child { border-bottom: none; }
+    .warehouse-info { display: flex; align-items: center; gap: 10px; flex: 1; }
+    .warehouse-icon {
+      width: 36px; height: 36px; border-radius: var(--radius-sm);
+      background: rgba(0,102,255,0.10);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; flex-shrink: 0;
+    }
+    .warehouse-name { font-size: 14px; font-weight: 600; }
+    .warehouse-code { font-size: 11px; color: var(--text-muted); }
+    .warehouse-del {
+      color: var(--danger); padding: 6px; margin-right: -6px;
+    }
+
+    .add-warehouse {
+      display: flex; align-items: center; gap: 10px;
+      padding: 14px var(--space-md);
+      color: var(--brand-primary); font-size: 14px; font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* MODAL */
+    .modal-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(8px);
+      z-index: 300;
+      align-items: flex-end;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-sheet {
+      background: var(--bg-card);
+      border-radius: 24px 24px 0 0;
+      padding: 0 var(--space-md) max(var(--space-xl), env(safe-area-inset-bottom));
+      width: 100%;
+      border-top: 1px solid var(--border-light);
+      animation: slideUp 0.3s ease;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to   { transform: translateY(0); }
+    }
+    .modal-handle {
+      width: 40px; height: 4px;
+      background: var(--bg-surface); border-radius: 2px;
+      margin: 12px auto 20px;
+    }
+    .modal-title { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+    .modal-sub { font-size: 13px; color: var(--text-secondary); margin-bottom: 24px; }
+    .time-selects { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+    .modal-actions { display: flex; gap: 10px; }
+    .btn-danger { background: rgba(255,59,59,0.12); color: var(--danger); font-size: 14px; font-weight: 700; padding: 13px; border-radius: var(--radius-md); flex: 1; }
+    .btn-save { background: var(--brand-primary); color: white; font-size: 14px; font-weight: 700; padding: 13px; border-radius: var(--radius-md); flex: 2; }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <div class="topbar-logo">
+        <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
+          <rect width="28" height="28" rx="7" fill="#00C27C"/>
+          <path d="M8 14L12 18L20 10" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Ready4Drive
+      </div>
+      <div class="topbar-actions">
+        <button class="topbar-lang">🌐 ES</button>
+        <div class="topbar-avatar">J</div>
+      </div>
+    </header>
+
+    <div class="page-content">
+
+      <h1 class="page-title">Mis Filtros</h1>
+      <p class="page-sub">Configura tu horario y almacenes preferidos.</p>
+
+      <!-- SAVE BTN -->
+      <button class="btn btn-primary mb-md" onclick="showSaved()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        Guardar cambios
+      </button>
+      <div id="savedMsg" style="display:none; background: rgba(0,194,124,0.12); border: 1px solid rgba(0,194,124,0.3); border-radius: var(--radius-md); padding: 12px; text-align:center; color: var(--brand-primary); font-weight:700; font-size:14px; margin-bottom: var(--space-md);">
+        ✓ Cambios guardados correctamente
+      </div>
+
+      <!-- WEEKLY SCHEDULE -->
+      <div class="section-header">
+        <span class="section-title">Horario semanal</span>
+        <span class="section-action">Toca un día</span>
+      </div>
+
+      <div class="days-grid">
+        <!-- LUNES -->
+        <div class="day-card disabled-day" onclick="openModal('Lunes', 'Monday', false, '12:00am', '01:59am')">
+          <div class="day-name">Lunes</div>
+          <div class="day-disabled-label">Desactivado</div>
+        </div>
+        <!-- MARTES -->
+        <div class="day-card enabled" onclick="openModal('Martes', 'Tuesday', true, '12:00am', '11:59pm')">
+          <div class="day-check">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+          </div>
+          <div class="day-name">Martes</div>
+          <div class="day-time">Inicio: 12:00am<br>Fin: 11:59pm</div>
+        </div>
+        <!-- MIÉRCOLES -->
+        <div class="day-card disabled-day" onclick="openModal('Miércoles', 'Wednesday', false, '12:00am', '11:59pm')">
+          <div class="day-name">Miércoles</div>
+          <div class="day-disabled-label">Desactivado</div>
+        </div>
+        <!-- JUEVES -->
+        <div class="day-card disabled-day" onclick="openModal('Jueves', 'Thursday', false, '12:00am', '11:59pm')">
+          <div class="day-name">Jueves</div>
+          <div class="day-disabled-label">Desactivado</div>
+        </div>
+        <!-- VIERNES -->
+        <div class="day-card disabled-day" onclick="openModal('Viernes', 'Friday', false, '12:00am', '11:59pm')">
+          <div class="day-name">Viernes</div>
+          <div class="day-disabled-label">Desactivado</div>
+        </div>
+        <!-- SÁBADO -->
+        <div class="day-card disabled-day" onclick="openModal('Sábado', 'Saturday', false, '12:00am', '11:59pm')">
+          <div class="day-name">Sábado</div>
+          <div class="day-disabled-label">Desactivado</div>
+        </div>
+        <!-- DOMINGO full width -->
+        <div class="day-card enabled" style="grid-column: span 2;" onclick="openModal('Domingo', 'Sunday', true, '01:00am', '09:59pm')">
+          <div class="day-check">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+          </div>
+          <div class="day-name">Domingo</div>
+          <div class="day-time">Inicio: 01:00am · Fin: 09:59pm</div>
+        </div>
+      </div>
+
+      <!-- WAREHOUSES -->
+      <div class="section-header">
+        <span class="section-title">Almacenes</span>
+      </div>
+
+      <div class="card mb-md">
+        <div class="warehouse-item">
+          <div class="warehouse-info">
+            <div class="warehouse-icon">📦</div>
+            <div>
+              <div class="warehouse-name">Brooklyn Fort Greene</div>
+              <div class="warehouse-code">C299 · Whole Foods</div>
+            </div>
+          </div>
+          <button class="warehouse-del">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+          </button>
+        </div>
+        <div class="warehouse-item">
+          <div class="warehouse-info">
+            <div class="warehouse-icon">📦</div>
+            <div>
+              <div class="warehouse-name">Maspeth</div>
+              <div class="warehouse-code">DBK4 · Amazon.com</div>
+            </div>
+          </div>
+          <button class="warehouse-del">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+          </button>
+        </div>
+        <div class="warehouse-item">
+          <div class="warehouse-info">
+            <div class="warehouse-icon">📦</div>
+            <div>
+              <div class="warehouse-name">Woodside</div>
+              <div class="warehouse-code">DBK1 · Amazon.com</div>
+            </div>
+          </div>
+          <button class="warehouse-del">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+          </button>
+        </div>
+        <div class="warehouse-item">
+          <div class="warehouse-info">
+            <div class="warehouse-icon">📦</div>
+            <div>
+              <div class="warehouse-name">Woodside</div>
+              <div class="warehouse-code">DXX5 · Amazon.com</div>
+            </div>
+          </div>
+          <button class="warehouse-del">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+          </button>
+        </div>
+        <div class="warehouse-item">
+          <div class="warehouse-info">
+            <div class="warehouse-icon">📦</div>
+            <div>
+              <div class="warehouse-name">Brooklyn</div>
+              <div class="warehouse-code">DAB5 · Amazon.com</div>
+            </div>
+          </div>
+          <button class="warehouse-del">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+          </button>
+        </div>
+        <div class="add-warehouse" onclick="openWarehouseModal()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          Agregar almacén
+        </div>
+      </div>
+
+      <!-- SAVE BTN BOTTOM -->
+      <button class="btn btn-primary" onclick="showSaved()">Guardar cambios</button>
+
+    </div>
+
+    <!-- BOTTOM NAV -->
+    <nav class="bottom-nav">
+      <a href="dashboard.html" class="bottom-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Inicio
+      </a>
+      <a href="invitations.html" class="bottom-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Invitar
+      </a>
+      <a href="settings.html" class="bottom-nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="16" cy="6" r="2" fill="currentColor"/><circle cx="8" cy="12" r="2" fill="currentColor"/><circle cx="16" cy="18" r="2" fill="currentColor"/></svg>
+        Filtros
+      </a>
+      <a href="payments.html" class="bottom-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        Pagos
+      </a>
+      <a href="profile.html" class="bottom-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Perfil
+      </a>
+    </nav>
+
+    <!-- ADD WAREHOUSE MODAL -->
+    <div class="modal-overlay" id="warehouseModal" onclick="closeWarehouseOutside(event)">
+      <div class="modal-sheet" style="max-height: 85vh; display: flex; flex-direction: column; padding-bottom: 0;">
+        <div class="modal-handle"></div>
+        <div style="padding: 0 0 16px;">
+          <h2 class="modal-title">Agregar almacén</h2>
+          <p class="modal-sub" style="margin-bottom: 14px;">Selecciona el almacén donde deseas trabajar</p>
+          <!-- SEARCH -->
+          <div style="position: relative;">
+            <svg style="position:absolute; left:14px; top:50%; transform:translateY(-50%); color: var(--text-muted);" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            <input type="text" class="input-field" id="warehouseSearch" placeholder="Buscar almacén..." oninput="filterWarehouses()" style="padding-left: 42px;">
+          </div>
+        </div>
+        <!-- LIST -->
+        <div id="warehouseList" style="overflow-y: auto; flex: 1; padding-bottom: max(24px, env(safe-area-inset-bottom));">
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY MODAL -->
+    <div class="modal-overlay" id="dayModal" onclick="closeModalOutside(event)">
+      <div class="modal-sheet">
+        <div class="modal-handle"></div>
+        <h2 class="modal-title" id="modalDayName">Lunes</h2>
+        <p class="modal-sub">Configura el horario de búsqueda para este día</p>
+        <div class="time-selects">
+          <div class="input-group">
+            <label class="input-label">Hora de inicio</label>
+            <select class="select-field" id="modalStart"></select>
+          </div>
+          <div class="input-group">
+            <label class="input-label">Hora de fin</label>
+            <select class="select-field" id="modalEnd"></select>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="btn-danger" id="modalDisableBtn" onclick="disableDay()">Desactivar</button>
+          <button class="btn-save" onclick="saveDay()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline; margin-right:6px;"><path d="M20 6L9 17l-5-5"/></svg>
+            Guardar
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // ===== WAREHOUSE DATA =====
+    const ALL_WAREHOUSES = [
+      'Bethpage (DNY4) - Amazon.com',
+      'Bethpage (UNY4) - Fresh Online',
+      'Bethpage (GRA1) - Grocery Automation Gamma',
+      'Brooklyn (DBK6) - Amazon.com',
+      'Brooklyn (DXX4) - Amazon.com',
+      'Brooklyn (DYN7) - Amazon.com',
+      'Brooklyn (DYY4) - Amazon.com',
+      'Brooklyn (RBK2) - Community Delivery',
+      'Brooklyn (UNY5) - Fresh Online',
+      'Brooklyn NY (NNY1)',
+      'Brooklyn Fort Greene (C299) - Whole Foods',
+      'Brooklyn Sunset Park (C506) - Whole Foods',
+      'Carle Place (DBU3) - Amazon.com',
+      'East Massapequa (C524) - Whole Foods',
+      'Farmingville (MAO5) - Fresh Stores',
+      'Hauppauge (RNY9) - Community Delivery',
+      'Holbrook (C567) - Whole Foods',
+      'Holbrook (DYR7) - Amazon.com',
+      'Huntington Station (C548) - Whole Foods',
+      'Long Island Commack (C246) - Whole Foods',
+      'Long Island Garden City (C440) - Whole Foods',
+      'Long Island Jericho (C080) - Whole Foods',
+      'Long Island Lake Grove (C081) - Whole Foods',
+      'Long Island Manhasset (C082) - Whole Foods',
+      'Maspeth (DBK4) - Amazon.com',
+      'Melville NY (VNY5) - Sub Same-Day',
+      'Middle Village (DYN3) - Amazon.com',
+      'Mineola (ZBK2) - Amazon Now',
+      'New York Brooklyn (C077) - Whole Foods',
+      'New York Williamsburg (C084) - Whole Foods',
+      'Plainview (MAI5) - Fresh Stores',
+      'Queens / LI City (ZYO1) - Manhattan Delivery',
+      'Rosedale (DYY3) - Amazon.com',
+      'Shirley (DAB8) - Amazon.com',
+      'Staten Island (DYY6) - Amazon.com',
+      'Staten Island (MAM3) - Fresh Stores',
+      'Syosset (DYY9) - Amazon.com',
+      'Westhampton Beach (DYR3) - Amazon.com',
+      'Woodside (DBK1) - Amazon.com',
+      'Woodside (DXX5) - Amazon.com',
+    ];
+
+    let addedWarehouses = new Set([
+      'Brooklyn Fort Greene (C299) - Whole Foods',
+      'Maspeth (DBK4) - Amazon.com',
+      'Woodside (DBK1) - Amazon.com',
+      'Woodside (DXX5) - Amazon.com',
+      'Brooklyn (DAB5) - Amazon.com',
+    ]);
+
+    function getWarehouseIcon(name) {
+      if (name.includes('Whole Foods')) return '🥦';
+      if (name.includes('Fresh')) return '🌿';
+      if (name.includes('Community')) return '🏘️';
+      if (name.includes('Grocery')) return '🛒';
+      if (name.includes('Amazon Now')) return '⚡';
+      return '📦';
+    }
+
+    function renderWarehouseList(filter = '') {
+      const list = document.getElementById('warehouseList');
+      const lower = filter.toLowerCase();
+      const filtered = ALL_WAREHOUSES.filter(w => w.toLowerCase().includes(lower));
+      if (filtered.length === 0) {
+        list.innerHTML = `<div style="text-align:center; padding: 32px; color: var(--text-muted); font-size:14px;">Sin resultados para "${filter}"</div>`;
+        return;
+      }
+      list.innerHTML = filtered.map(w => {
+        const added = addedWarehouses.has(w);
+        const icon = getWarehouseIcon(w);
+        return `
+          <div style="display:flex; align-items:center; gap:12px; padding:14px 0; border-bottom:1px solid var(--border); cursor:${added?'default':'pointer'};" onclick="${added?'':"addWarehouse('" + w.replace(/'/g,"\\'") + "')"}"> 
+            <div style="width:38px; height:38px; border-radius:10px; background:${added?'rgba(0,194,124,0.12)':'var(--bg-surface)'}; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0;">${icon}</div>
+            <div style="flex:1; min-width:0;">
+              <div style="font-size:13px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${w}</div>
+            </div>
+            <div style="flex-shrink:0; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; ${added ? 'background:rgba(0,194,124,0.12); color:var(--brand-primary);' : 'border:1.5px solid var(--border-light); color:var(--text-muted);'}">
+              ${added
+                ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>'
+                : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>'
+              }
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    function addWarehouse(name) {
+      addedWarehouses.add(name);
+      renderWarehouseList(document.getElementById('warehouseSearch').value);
+    }
+
+    function filterWarehouses() {
+      renderWarehouseList(document.getElementById('warehouseSearch').value);
+    }
+
+    function openWarehouseModal() {
+      document.getElementById('warehouseSearch').value = '';
+      renderWarehouseList();
+      document.getElementById('warehouseModal').classList.add('open');
+    }
+
+    function closeWarehouseOutside(e) {
+      if (e.target === document.getElementById('warehouseModal')) closeWarehouseModal();
+    }
+    function closeWarehouseModal() {
+      document.getElementById('warehouseModal').classList.remove('open');
+    }
+
+    // ===== DAYS =====
+    const times = ['12:00am','01:00am','02:00am','03:00am','04:00am','05:00am','06:00am','07:00am','08:00am','09:00am','10:00am','11:00am','12:00pm','01:00pm','02:00pm','03:00pm','04:00pm','05:00pm','06:00pm','07:00pm','08:00pm','09:00pm','10:00pm','11:00pm','11:59pm'];
+
+    let currentDayEl = null;
+
+    function populateSelects(startVal, endVal) {
+      const startSel = document.getElementById('modalStart');
+      const endSel = document.getElementById('modalEnd');
+      startSel.innerHTML = times.map(t => `<option ${t===startVal?'selected':''}>${t}</option>`).join('');
+      endSel.innerHTML = times.map(t => `<option ${t===endVal?'selected':''}>${t}</option>`).join('');
+    }
+
+    function openModal(nameEs, nameEn, enabled, startTime, endTime) {
+      document.getElementById('modalDayName').textContent = nameEs;
+      const btn = document.getElementById('modalDisableBtn');
+      btn.textContent = enabled ? 'Desactivar día' : 'Activar día';
+      btn.style.color = enabled ? 'var(--danger)' : 'var(--brand-primary)';
+      btn.style.background = enabled ? 'rgba(255,59,59,0.10)' : 'rgba(0,194,124,0.10)';
+      populateSelects(startTime, endTime);
+      document.getElementById('dayModal').classList.add('open');
+    }
+
+    function closeModalOutside(e) {
+      if (e.target === document.getElementById('dayModal')) closeModal();
+    }
+    function closeModal() {
+      document.getElementById('dayModal').classList.remove('open');
+    }
+    function saveDay() { closeModal(); showSaved(); }
+    function disableDay() { closeModal(); }
+
+    function showSaved() {
+      const msg = document.getElementById('savedMsg');
+      msg.style.display = 'block';
+      setTimeout(() => msg.style.display = 'none', 3000);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Ready4Drive — Invitaciones</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .invite-hero {
+      background: linear-gradient(135deg, rgba(255,107,43,0.15) 0%, rgba(255,184,0,0.08) 100%);
+      border: 1px solid rgba(255,107,43,0.2);
+      border-radius: var(--radius-xl);
+      padding: var(--space-lg) var(--space-md);
+      text-align: center;
+      margin-bottom: var(--space-md);
+      position: relative; overflow: hidden;
+    }
+    .invite-hero::before {
+      content: '🎁';
+      position: absolute; top: -20px; right: -10px;
+      font-size: 80px; opacity: 0.08;
+    }
+    .invite-big-icon { font-size: 40px; margin-bottom: 12px; }
+    .invite-hero-title { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 8px; }
+    .invite-hero-sub { font-size: 14px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 20px; }
+    .invite-steps { display: flex; justify-content: center; gap: 16px; margin-bottom: 16px; }
+    .invite-step { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .invite-step-num {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--brand-accent); color: white;
+      font-size: 13px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .invite-step-label { font-size: 11px; color: var(--text-secondary); text-align: center; max-width: 60px; }
+
+    /* INPUT ROW */
+    .invite-input-row { display: flex; gap: 8px; }
+    .invite-input-row .input-field { flex: 1; }
+    .invite-send {
+      background: var(--brand-accent);
+      color: white; font-weight: 700; font-size: 14px;
+      padding: 13px 16px; border-radius: var(--radius-md);
+      white-space: nowrap;
+    }
+
+    /* STATS ROW */
+    .invite-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: var(--space-md); }
+    .invite-stat {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: 14px;
+      text-align: center;
+    }
+    .invite-stat-val { font-size: 26px; font-weight: 800; }
+    .invite-stat-label { font-size: 12px; color: var(--text-secondary); font-weight: 600; }
+
+    /* REFERRAL LIST */
+    .referral-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px var(--space-md);
+      border-bottom: 1px solid var(--border);
+    }
+    .referral-item:last-child { border-bottom: none; }
+    .ref-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; font-weight: 800; flex-shrink: 0;
+    }
+    .ref-info { flex: 1; }
+    .ref-phone { font-size: 14px; font-weight: 600; }
+    .ref-time { font-size: 12px; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+
+    <header class="topbar">
+      <div class="topbar-logo">
+        <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
+          <rect width="28" height="28" rx="7" fill="#00C27C"/>
+          <path d="M8 14L12 18L20 10" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Ready4Drive
+      </div>
+      <div class="topbar-actions">
+        <button class="topbar-lang">🌐 ES</button>
+        <div class="topbar-avatar">J</div>
+      </div>
+    </header>
+
+    <div class="page-content">
+
+      <!-- HERO -->
+      <div class="invite-hero">
+        <div class="invite-big-icon">🎁</div>
+        <h1 class="invite-hero-title">Invita y gana días gratis</h1>
+        <p class="invite-hero-sub">
+          Por cada amigo que invites y haga su primer pago,<br>
+          <strong style="color: var(--brand-accent);">tú ganas 7 días gratis</strong> de servicio.
+        </p>
+        <div class="invite-steps">
+          <div class="invite-step">
+            <div class="invite-step-num">1</div>
+            <div class="invite-step-label">Ingresa su número</div>
+          </div>
+          <div style="color: var(--text-muted); font-size:18px; align-self:center; margin-top:-8px;">→</div>
+          <div class="invite-step">
+            <div class="invite-step-num">2</div>
+            <div class="invite-step-label">Tu amigo se registra</div>
+          </div>
+          <div style="color: var(--text-muted); font-size:18px; align-self:center; margin-top:-8px;">→</div>
+          <div class="invite-step">
+            <div class="invite-step-num">3</div>
+            <div class="invite-step-label">¡Ganas días gratis!</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INPUT -->
+      <div class="card card-padded mb-md">
+        <div class="input-group" style="margin-bottom:12px;">
+          <label class="input-label">Número de tu amigo</label>
+          <div class="invite-input-row">
+            <input type="tel" class="input-field" placeholder="+1 (754) 000-0000" inputmode="numeric">
+            <button class="invite-send">Invitar →</button>
+          </div>
+        </div>
+        <p style="font-size:12px; color: var(--text-muted);">Le enviaremos un mensaje con tu invitación personalizada.</p>
+      </div>
+
+      <!-- STATS -->
+      <div class="invite-stats">
+        <div class="invite-stat">
+          <div class="invite-stat-val" style="color: var(--brand-primary);">4</div>
+          <div class="invite-stat-label">Amigos invitados</div>
+        </div>
+        <div class="invite-stat">
+          <div class="invite-stat-val" style="color: var(--brand-accent);">2</div>
+          <div class="invite-stat-label">Pagos realizados</div>
+        </div>
+      </div>
+
+      <!-- LIST -->
+      <div class="section-header">
+        <span class="section-title">Tus referidos</span>
+      </div>
+
+      <div class="card">
+        <div class="referral-item">
+          <div class="ref-avatar" style="background: linear-gradient(135deg, var(--brand-primary), #00E89A);">+1</div>
+          <div class="ref-info">
+            <div class="ref-phone">+1 (248) 285-1226</div>
+            <div class="ref-time">hace 8 meses</div>
+          </div>
+          <span class="badge badge-success">Pago realizado</span>
+        </div>
+        <div class="referral-item">
+          <div class="ref-avatar" style="background: linear-gradient(135deg, #FFB800, #FF8C00);">+1</div>
+          <div class="ref-info">
+            <div class="ref-phone">+1 (754) 465-3124</div>
+            <div class="ref-time">hace 9 meses</div>
+          </div>
+          <span class="badge badge-warning">Pendiente</span>
+        </div>
+        <div class="referral-item">
+          <div class="ref-avatar" style="background: linear-gradient(135deg, #8B5CF6, #6366F1);">+1</div>
+          <div class="ref-info">
+            <div class="ref-phone">+1 (929) 396-9920</div>
+            <div class="ref-time">hace 1 mes</div>
+          </div>
+          <span class="badge badge-warning">Pendiente</span>
+        </div>
+        <div class="referral-item">
+          <div class="ref-avatar" style="background: linear-gradient(135deg, var(--brand-primary), var(--brand-blue));">+1</div>
+          <div class="ref-info">
+            <div class="ref-phone">+1 (954) 701-0640</div>
+            <div class="ref-time">hace 9 meses</div>
+          </div>
+          <span class="badge badge-success">Pago realizado</span>
+        </div>
+      </div>
+
+    </div>
+
+    <nav class="bottom-nav">
+      <a href="dashboard.html" class="bottom-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Inicio
+      </a>
+      <a href="invitations.html" class="bottom-nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Invitar
+      </a>
+      <a href="settings.html" class="bottom-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="16" cy="6" r="2" fill="currentColor"/><circle cx="8" cy="12" r="2" fill="currentColor"/><circle cx="16" cy="18" r="2" fill="currentColor"/></svg>
+        Filtros
+      </a>
+      <a href="payments.html" class="bottom-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        Pagos
+      </a>
+      <a href="profile.html" class="bottom-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Perfil
+      </a>
+    </nav>
+  </div>
+</body>
+</html>
