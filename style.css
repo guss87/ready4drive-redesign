@@ -15,12 +15,12 @@
   --brand-blue-light: #E8F0FF;
 
   /* === NEUTRALS === */
-  --bg-base: #0D0F14;            /* Negro profundo — fondo principal */
-  --bg-card: #161A23;            /* Cards */
-  --bg-card-2: #1E2330;         /* Cards secundarios */
-  --bg-surface: #252B3B;        /* Inputs, elementos interactivos */
-  --border: rgba(255,255,255,0.08);
-  --border-light: rgba(255,255,255,0.12);
+  --bg-base: #151C18;            /* Verde mate — fondo principal */
+  --bg-card: #1C2420;            /* Cards */
+  --bg-card-2: #222E27;         /* Cards secundarios */
+  --bg-surface: #2A3630;        /* Inputs, elementos interactivos */
+  --border: rgba(0,194,124,0.08);
+  --border-light: rgba(0,194,124,0.14);
 
   /* === TEXT === */
   --text-primary: #FFFFFF;
@@ -50,8 +50,8 @@
 
   /* === SHADOWS === */
   --shadow-card: 0 2px 20px rgba(0,0,0,0.4);
-  --shadow-glow-green: 0 0 24px rgba(0,194,124,0.25);
-  --shadow-glow-orange: 0 0 24px rgba(255,107,43,0.25);
+  --shadow-glow-green: none;
+  --shadow-glow-orange: none;
 
   /* === TRANSITIONS === */
   --transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
@@ -136,7 +136,7 @@ input, select { font-family: inherit; }
 .topbar-avatar {
   width: 32px; height: 32px;
   border-radius: var(--radius-full);
-  background: linear-gradient(135deg, var(--brand-primary), var(--brand-blue));
+  background: var(--brand-primary);
   display: flex; align-items: center; justify-content: center;
   font-size: 13px; font-weight: 700;
 }
@@ -219,14 +219,14 @@ input, select { font-family: inherit; }
 .btn-primary {
   background: var(--brand-primary);
   color: #fff;
-  box-shadow: var(--shadow-glow-green);
+  box-shadow: none;
 }
 .btn-primary:hover { background: var(--brand-primary-dark); transform: translateY(-1px); }
 
 .btn-accent {
   background: var(--brand-accent);
   color: #fff;
-  box-shadow: var(--shadow-glow-orange);
+  box-shadow: none;
 }
 .btn-accent:hover { opacity: 0.9; }
 
@@ -271,7 +271,7 @@ input, select { font-family: inherit; }
   transition: var(--transition);
   cursor: pointer;
 }
-.toggle input:checked + .toggle-track { background: var(--brand-primary); box-shadow: var(--shadow-glow-green); }
+.toggle input:checked + .toggle-track { background: var(--brand-primary); box-shadow: none; }
 .toggle-thumb {
   position: absolute;
   top: 3px; left: 3px;
@@ -385,28 +385,13 @@ input, select { font-family: inherit; }
   float: right; margin-top: -2px;
 }
 
-/* === GRADIENT HERO === */
+/* === HERO — mate sólido, sin gradientes === */
 .hero-gradient {
-  background: linear-gradient(135deg, #0D0F14 0%, #0D1A14 100%);
+  background: var(--bg-base);
   position: relative;
   overflow: hidden;
 }
-.hero-gradient::before {
-  content: '';
-  position: absolute;
-  top: -80px; right: -60px;
-  width: 280px; height: 280px;
-  background: radial-gradient(circle, rgba(0,194,124,0.15) 0%, transparent 70%);
-  pointer-events: none;
-}
-.hero-gradient::after {
-  content: '';
-  position: absolute;
-  bottom: -60px; left: -40px;
-  width: 200px; height: 200px;
-  background: radial-gradient(circle, rgba(0,102,255,0.10) 0%, transparent 70%);
-  pointer-events: none;
-}
+.hero-gradient::before, .hero-gradient::after { display: none; }
 
 /* === PRICING CARD === */
 .pricing-card {
@@ -422,7 +407,7 @@ input, select { font-family: inherit; }
 .pricing-card.selected {
   border-color: var(--brand-primary);
   background: rgba(0,194,124,0.08);
-  box-shadow: var(--shadow-glow-green);
+  box-shadow: none;
 }
 .pricing-card.popular {
   border-color: var(--brand-accent);

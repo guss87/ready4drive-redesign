@@ -44,14 +44,14 @@
       content: '';
       position: absolute; top: -100px; right: -80px;
       width: 320px; height: 320px;
-      background: radial-gradient(circle, rgba(0,194,124,0.18) 0%, transparent 70%);
+      background: transparent;
       pointer-events: none;
     }
     .hero::after {
       content: '';
       position: absolute; top: 200px; left: -60px;
       width: 200px; height: 200px;
-      background: radial-gradient(circle, rgba(0,102,255,0.12) 0%, transparent 70%);
+      background: transparent;
       pointer-events: none;
     }
     .hero-eyebrow {
@@ -69,7 +69,7 @@
       letter-spacing: -1px; margin-bottom: 16px;
     }
     .hero-title .highlight {
-      background: linear-gradient(135deg, var(--brand-primary), #00E89A);
+      background: var(--brand-primary);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -121,7 +121,7 @@
     }
     .mockup-status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--brand-primary); animation: pulse 2s infinite; }
     .mockup-earnings {
-      background: linear-gradient(135deg, rgba(0,194,124,0.15), rgba(0,102,255,0.08));
+      background: rgba(0,194,124,0.10);
       border: 1px solid rgba(0,194,124,0.2);
       border-radius: 12px; padding: 12px;
       margin-bottom: 10px;
@@ -197,7 +197,7 @@
       width: 36px; height: 36px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
       font-size: 14px; font-weight: 700;
-      background: linear-gradient(135deg, var(--brand-primary), var(--brand-blue));
+      background: var(--brand-primary);
     }
     .testimonial-name { font-size: 13px; font-weight: 700; }
     .testimonial-city { font-size: 11px; color: var(--text-muted); }
@@ -234,7 +234,7 @@
     /* CTA BANNER */
     .cta-banner {
       margin: 0 var(--space-md) 48px;
-      background: linear-gradient(135deg, rgba(0,194,124,0.15) 0%, rgba(0,102,255,0.08) 100%);
+      background: rgba(0,194,124,0.10);
       border: 1px solid rgba(0,194,124,0.2);
       border-radius: var(--radius-xl);
       padding: 32px var(--space-md);
@@ -245,7 +245,7 @@
       content: '';
       position: absolute; top: -40px; right: -40px;
       width: 160px; height: 160px;
-      background: radial-gradient(circle, rgba(0,194,124,0.2) 0%, transparent 70%);
+      background: transparent;
     }
     .cta-banner-title { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 8px; }
     .cta-banner-sub { font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; line-height: 1.5; }
@@ -267,10 +267,19 @@
   <!-- NAV -->
   <nav class="landing-nav">
     <div class="nav-logo">
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-        <rect width="28" height="28" rx="8" fill="#00C27C"/>
-        <path d="M8 14L12 18L20 10" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="20" cy="10" r="2.5" fill="white" opacity="0.3"/>
+      <svg class="robot-logo" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- cabeza -->
+        <rect x="4" y="8" width="20" height="14" rx="4" fill="#00C27C"/>
+        <!-- antena -->
+        <rect x="13" y="3" width="2" height="5" rx="1" fill="#00A868"/>
+        <circle cx="14" cy="3" r="1.5" fill="#00C27C"/>
+        <!-- ojos -->
+        <rect x="7" y="12" width="5" height="4" rx="1.5" fill="#151C18"/>
+        <rect x="16" y="12" width="5" height="4" rx="1.5" fill="#151C18"/>
+        <circle cx="9.5" cy="14" r="1.5" fill="#00E89A"/>
+        <circle cx="18.5" cy="14" r="1.5" fill="#00E89A"/>
+        <!-- boca -->
+        <rect x="9" y="18" width="10" height="2" rx="1" fill="#00A868"/>
       </svg>
       Ready4Drive
     </div>
@@ -424,7 +433,7 @@
       <div class="testimonial-stars">★★★★★</div>
       <p class="testimonial-text">"Lo mejor es que puedes configurar exactamente cuándo trabajas. Los fines de semana pongo el sistema y captura solos. Increíble."</p>
       <div class="testimonial-author">
-        <div class="testimonial-avatar" style="background: linear-gradient(135deg, #FF6B2B, #FF9A3C);">C</div>
+        <div class="testimonial-avatar" style="background: var(--brand-accent);">C</div>
         <div>
           <div class="testimonial-name">Carlos R.</div>
           <div class="testimonial-city">Houston, Texas • 5 meses usando R4D</div>
@@ -436,7 +445,7 @@
       <div class="testimonial-stars">★★★★★</div>
       <p class="testimonial-text">"Invité a 3 amigos y conseguí semanas gratis. El referido es real, me llegó el beneficio al instante. 100% recomendado para la comunidad."</p>
       <div class="testimonial-author">
-        <div class="testimonial-avatar" style="background: linear-gradient(135deg, #8B5CF6, #6366F1);">A</div>
+        <div class="testimonial-avatar" style="background: #8B5CF6;">A</div>
         <div>
           <div class="testimonial-name">Ana L.</div>
           <div class="testimonial-city">Los Ángeles, CA • 11 meses usando R4D</div>
