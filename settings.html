@@ -99,6 +99,117 @@
     .modal-actions { display: flex; gap: 10px; }
     .btn-danger { background: rgba(255,59,59,0.12); color: var(--danger); font-size: 14px; font-weight: 700; padding: 13px; border-radius: var(--radius-md); flex: 1; }
     .btn-save { background: var(--brand-primary); color: white; font-size: 14px; font-weight: 700; padding: 13px; border-radius: var(--radius-md); flex: 2; }
+
+    /* WAREHOUSE EDIT MODAL */
+    .wedit-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.80);
+      backdrop-filter: blur(10px);
+      z-index: 400;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .wedit-overlay.open { display: flex; }
+    .wedit-modal {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 360px;
+      padding: 24px 20px 20px;
+      animation: fadeScaleIn 0.25s ease;
+    }
+    @keyframes fadeScaleIn {
+      from { opacity:0; transform: scale(0.94); }
+      to   { opacity:1; transform: scale(1); }
+    }
+    .wedit-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      margin-bottom: 4px;
+    }
+    .wedit-title { font-size: 18px; font-weight: 800; }
+    .wedit-close {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: var(--bg-surface);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-muted); font-size: 16px; cursor: pointer;
+      flex-shrink: 0; margin-top: -2px;
+    }
+    .wedit-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 20px; }
+    .wedit-fields { display: flex; flex-direction: column; gap: 14px; margin-bottom: 18px; }
+    .wedit-field label {
+      display: block; font-size: 11px; font-weight: 700;
+      color: var(--text-secondary); text-transform: uppercase;
+      letter-spacing: 0.8px; margin-bottom: 6px;
+    }
+    .wedit-field-sub { font-size: 10px; color: var(--text-muted); font-weight: 400; text-transform: none; letter-spacing: 0; margin-left: 4px; }
+    .wedit-input-wrap {
+      display: flex; align-items: center;
+      background: var(--bg-surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .wedit-input-wrap:focus-within { border-color: var(--brand-primary); }
+    .wedit-prefix {
+      padding: 0 10px 0 14px;
+      color: var(--brand-primary); font-weight: 700; font-size: 15px;
+    }
+    .wedit-suffix {
+      padding: 0 14px 0 6px;
+      color: var(--text-muted); font-size: 12px;
+    }
+    .wedit-input {
+      flex: 1; background: transparent; border: none; outline: none;
+      color: var(--text-primary); font-size: 16px; font-weight: 700;
+      font-family: inherit; padding: 12px 0;
+    }
+    /* Duración bloques pills */
+    .duration-pills {
+      display: flex; flex-wrap: wrap; gap: 7px;
+    }
+    .dur-pill {
+      padding: 6px 12px;
+      border-radius: var(--radius-full);
+      font-size: 12px; font-weight: 700;
+      background: var(--bg-surface);
+      border: 1.5px solid var(--border);
+      color: var(--text-muted);
+      cursor: pointer; transition: var(--transition);
+    }
+    .dur-pill.active {
+      background: rgba(0,194,124,0.14);
+      border-color: var(--brand-primary);
+      color: var(--brand-primary);
+    }
+    /* Botones acción del modal */
+    .wedit-actions { display: flex; gap: 10px; }
+    .wedit-btn-remove {
+      flex: 1; padding: 13px;
+      background: rgba(255,59,59,0.10);
+      color: var(--danger);
+      font-size: 14px; font-weight: 700;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255,59,59,0.2);
+      cursor: pointer; font-family: inherit;
+    }
+    .wedit-btn-save {
+      flex: 2; padding: 13px;
+      background: var(--brand-primary);
+      color: #fff;
+      font-size: 14px; font-weight: 700;
+      border-radius: var(--radius-md);
+      border: none; cursor: pointer; font-family: inherit;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    /* Click en warehouse item */
+    .warehouse-item { cursor: pointer; transition: background 0.15s; }
+    .warehouse-item:hover { background: rgba(0,194,124,0.04); }
+    .warehouse-item:active { background: rgba(0,194,124,0.08); }
+
   </style>
 </head>
 <body>
@@ -202,7 +313,7 @@
       </div>
 
       <div class="card mb-md">
-        <div class="warehouse-item">
+        <div class="warehouse-item" onclick="handleWarehouseClick(this)">
           <div class="warehouse-info">
             <div class="warehouse-icon">📦</div>
             <div>
@@ -214,7 +325,7 @@
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
           </button>
         </div>
-        <div class="warehouse-item">
+        <div class="warehouse-item" onclick="handleWarehouseClick(this)">
           <div class="warehouse-info">
             <div class="warehouse-icon">📦</div>
             <div>
@@ -226,7 +337,7 @@
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
           </button>
         </div>
-        <div class="warehouse-item">
+        <div class="warehouse-item" onclick="handleWarehouseClick(this)">
           <div class="warehouse-info">
             <div class="warehouse-icon">📦</div>
             <div>
@@ -238,7 +349,7 @@
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
           </button>
         </div>
-        <div class="warehouse-item">
+        <div class="warehouse-item" onclick="handleWarehouseClick(this)">
           <div class="warehouse-info">
             <div class="warehouse-icon">📦</div>
             <div>
@@ -250,7 +361,7 @@
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
           </button>
         </div>
-        <div class="warehouse-item">
+        <div class="warehouse-item" onclick="handleWarehouseClick(this)">
           <div class="warehouse-info">
             <div class="warehouse-icon">📦</div>
             <div>
@@ -296,6 +407,75 @@
         Perfil
       </a>
     </nav>
+
+
+    <!-- WAREHOUSE EDIT MODAL -->
+    <div class="wedit-overlay" id="warehouseEditModal" onclick="closeWeditOutside(event)">
+      <div class="wedit-modal">
+        <div class="wedit-header">
+          <div>
+            <div class="wedit-title">Editar almacén</div>
+          </div>
+          <button class="wedit-close" onclick="closeWarehouseEdit()">✕</button>
+        </div>
+        <div class="wedit-sub" id="weditSubtitle">Brooklyn Fort Greene (C299) · Whole Foods</div>
+
+        <div class="wedit-fields">
+          <!-- Precio mínimo del bloque -->
+          <div class="wedit-field">
+            <label>Precio mínimo del bloque</label>
+            <div class="wedit-input-wrap">
+              <span class="wedit-prefix">$</span>
+              <input class="wedit-input" type="number" inputmode="numeric" id="weditPrice" value="170" placeholder="0">
+            </div>
+          </div>
+          <!-- Monto mínimo por hora -->
+          <div class="wedit-field">
+            <label>Monto mínimo por hora</label>
+            <div class="wedit-input-wrap">
+              <span class="wedit-prefix">$</span>
+              <input class="wedit-input" type="number" inputmode="numeric" id="weditMinHour" value="30" placeholder="0">
+              <span class="wedit-suffix">/ hr</span>
+            </div>
+          </div>
+          <!-- Time buffer -->
+          <div class="wedit-field">
+            <label>Time buffer <span class="wedit-field-sub">en minutos</span></label>
+            <div class="wedit-input-wrap">
+              <input class="wedit-input" type="number" inputmode="numeric" id="weditBuffer" value="180" placeholder="0" style="padding-left:14px;">
+              <span class="wedit-suffix">min</span>
+            </div>
+          </div>
+          <!-- Duración de bloques -->
+          <div class="wedit-field">
+            <label>Duración de bloques</label>
+            <div class="duration-pills" id="durationPills">
+              <button class="dur-pill active" onclick="togglePill(this)">1h</button>
+              <button class="dur-pill active" onclick="togglePill(this)">1.5h</button>
+              <button class="dur-pill active" onclick="togglePill(this)">2h</button>
+              <button class="dur-pill active" onclick="togglePill(this)">2.5h</button>
+              <button class="dur-pill active" onclick="togglePill(this)">3h</button>
+              <button class="dur-pill active" onclick="togglePill(this)">3.5h</button>
+              <button class="dur-pill active" onclick="togglePill(this)">4h</button>
+              <button class="dur-pill active" onclick="togglePill(this)">4.5h</button>
+              <button class="dur-pill active" onclick="togglePill(this)">5h</button>
+              <button class="dur-pill active" onclick="togglePill(this)">6h</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="wedit-actions">
+          <button class="wedit-btn-remove" onclick="closeWarehouseEdit()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline; margin-right:4px;"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+            Eliminar
+          </button>
+          <button class="wedit-btn-save" onclick="saveWarehouseEdit()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+            Guardar
+          </button>
+        </div>
+      </div>
+    </div>
 
     <!-- ADD WAREHOUSE MODAL -->
     <div class="modal-overlay" id="warehouseModal" onclick="closeWarehouseOutside(event)">
@@ -345,6 +525,39 @@
   </div>
 
   <script>
+
+    // ===== WAREHOUSE EDIT MODAL =====
+    function handleWarehouseClick(el) {
+      // Ignorar si click fue en el botón de eliminar
+      if (event && event.target.closest('.warehouse-del')) return;
+      const name = el.querySelector('.warehouse-name')?.textContent || '';
+      const code = el.querySelector('.warehouse-code')?.textContent || '';
+      openWarehouseEdit(name + ' · ' + code);
+    }
+
+    function openWarehouseEdit(label) {
+      document.getElementById('weditSubtitle').textContent = label;
+      document.getElementById('warehouseEditModal').classList.add('open');
+    }
+
+    function closeWarehouseEdit() {
+      document.getElementById('warehouseEditModal').classList.remove('open');
+    }
+
+    function closeWeditOutside(e) {
+      if (e.target === document.getElementById('warehouseEditModal')) closeWarehouseEdit();
+    }
+
+    function togglePill(btn) {
+      btn.classList.toggle('active');
+    }
+
+    function saveWarehouseEdit() {
+      closeWarehouseEdit();
+      showSaved();
+    }
+
+
     // ===== WAREHOUSE DATA =====
     const ALL_WAREHOUSES = [
       'Bethpage (DNY4) - Amazon.com',

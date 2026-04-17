@@ -69,11 +69,26 @@
     .invite-arrow { color: var(--brand-accent); font-size: 18px; }
 
     /* SEARCH TOGGLE */
+    /* === PULSE ANIMATION === */
+    @keyframes pulse-ring {
+      0% { box-shadow: 0 0 0 0 rgba(0,194,124,0.35); }
+      70% { box-shadow: 0 0 0 10px rgba(0,194,124,0); }
+      100% { box-shadow: 0 0 0 0 rgba(0,194,124,0); }
+    }
+    @keyframes dot-blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
     .search-toggle-card {
       background: var(--bg-card);
-      border: 1px solid var(--border);
+      border: 1.5px solid var(--border);
       border-radius: var(--radius-lg);
       padding: var(--space-md);
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .search-toggle-card.system-on {
+      border-color: rgba(0,194,124,0.45);
+      background: rgba(0,194,124,0.04);
     }
     .search-toggle-header {
       display: flex; align-items: center; justify-content: space-between;
@@ -83,6 +98,7 @@
       display: flex; align-items: center; gap: 8px;
       font-size: 15px; font-weight: 700;
     }
+    /* Badge principal ON/OFF */
     .search-status-badge {
       font-size: 11px; font-weight: 800;
       padding: 3px 10px; border-radius: var(--radius-full);
@@ -90,6 +106,33 @@
     }
     .search-status-badge.on { background: rgba(0,194,124,0.15); color: var(--brand-primary); }
     .search-status-badge.off { background: var(--bg-surface); color: var(--text-muted); }
+    /* Barra de estado descriptiva */
+    .system-status-bar {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      margin-bottom: 14px;
+      font-size: 13px; font-weight: 600;
+      transition: all 0.3s;
+    }
+    .system-status-bar.off {
+      background: var(--bg-surface);
+      color: var(--text-muted);
+    }
+    .system-status-bar.on {
+      background: rgba(0,194,124,0.10);
+      color: var(--brand-primary);
+    }
+    .status-dot {
+      width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+    }
+    .status-dot.off { background: var(--text-muted); }
+    .status-dot.on {
+      background: var(--brand-primary);
+      animation: pulse-ring 1.8s infinite, dot-blink 1.8s infinite;
+    }
+    .status-main-text { font-weight: 700; font-size: 13px; }
+    .status-sub-text { font-size: 11px; opacity: 0.75; margin-left: auto; }
     .search-modes { display: flex; gap: 8px; }
     .mode-btn {
       flex: 1; padding: 10px 8px;
@@ -284,6 +327,12 @@
             <span class="toggle-thumb"></span>
           </label>
         </div>
+        <!-- BARRA DE ESTADO DESCRIPTIVA -->
+        <div class="system-status-bar off" id="systemStatusBar">
+          <div class="status-dot off" id="statusDot"></div>
+          <span class="status-main-text" id="statusMainText">Sistema apagado — no está capturando bloques</span>
+          <span class="status-sub-text" id="statusSubText"></span>
+        </div>
         <div class="search-modes">
           <button class="mode-btn primary-action active" id="modeInstant">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
@@ -391,11 +440,26 @@
   <script>
     function toggleSearch() {
       const toggle = document.getElementById('searchToggle');
+      const card = document.querySelector('.search-toggle-card');
+      const bar = document.getElementById('systemStatusBar');
+      const dot = document.getElementById('statusDot');
+      const mainTxt = document.getElementById('statusMainText');
+      const subTxt = document.getElementById('statusSubText');
       const badge = document.getElementById('statusBadge');
       if (toggle.checked) {
         badge.textContent = 'ON'; badge.className = 'search-status-badge on';
+        card.classList.add('system-on');
+        bar.className = 'system-status-bar on';
+        dot.className = 'status-dot on';
+        mainTxt.textContent = '✓ Sistema activo — buscando bloques ahora';
+        subTxt.textContent = 'EN VIVO';
       } else {
         badge.textContent = 'OFF'; badge.className = 'search-status-badge off';
+        card.classList.remove('system-on');
+        bar.className = 'system-status-bar off';
+        dot.className = 'status-dot off';
+        mainTxt.textContent = 'Sistema apagado — no está capturando bloques';
+        subTxt.textContent = '';
       }
     }
     function setMode(m) {
