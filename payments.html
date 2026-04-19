@@ -138,7 +138,7 @@
         Ready4Drive
       </div>
       <div class="topbar-actions">
-        <button class="topbar-lang">🌐 ES</button>
+        <button class="topbar-lang" title="Cambiar idioma: ES → EN → PT">🌐 ES</button>
         <div class="topbar-avatar">J</div>
       </div>
     </header>
@@ -397,228 +397,201 @@
     ">🤖 Ir al dashboard</a>
     <p style="font-size:12px; color:var(--text-muted);">Recibirás confirmación por SMS</p>
   </div>
-
-
-  // ===== SELECTOR DE IDIOMA EN/ES =====
+<script>
+  // ===== SELECTOR DE IDIOMA ES/EN/PT =====
   (function() {
-    const TRANS = {
-      es: {},  // vacío = textos originales en HTML
+    var TRANS = {
       en: {
-        // COMMON
-        'Inicio': 'Home',
-        'Invitar': 'Invite',
-        'Filtros': 'Filters',
-        'Pagos': 'Payments',
-        'Perfil': 'Profile',
-        'Soporte': 'Support',
-        // TOPBAR
-        'Sistema': 'System',
-        'OFF': 'OFF',
-        'ON': 'ON',
-        // DASHBOARD
+        // NAV
+        'Inicio': 'Home', 'Invitar': 'Invite', 'Filtros': 'Filters',
+        'Pagos': 'Payments', 'Perfil': 'Profile', 'Soporte': 'Support',
+        // SYSTEM
         'Bot apagado': 'Bot off',
         'Sistema detenido. Activa para capturar bloques automáticamente.': 'System stopped. Activate to capture blocks automatically.',
         'Escaneando bloques disponibles...': 'Scanning available blocks...',
         'Activo · buscando en Amazon Flex': 'Active · searching Amazon Flex',
+        // MODES
         'MODO DE BÚSQUEDA': 'SEARCH MODE',
-        'Cauteloso': 'Cautious',
-        'Solo bloques de bajo riesgo': 'Low-risk blocks only',
-        'Premium': 'Premium',
+        'Cauteloso': 'Cautious', 'Solo bloques de bajo riesgo': 'Low-risk blocks only',
         'Balance riesgo/ganancia': 'Risk/reward balance',
-        'Máximo': 'Maximum',
-        'Todos los bloques disponibles': 'All available blocks',
-        'RESUMEN DE SEMANA': 'WEEKLY SUMMARY',
-        'Esta semana': 'This week',
-        'Bloques': 'Blocks',
-        'Horas': 'Hours',
+        'Máximo': 'Maximum', 'Todos los bloques disponibles': 'All available blocks',
+        // DASHBOARD
+        'RESUMEN DE SEMANA': 'WEEKLY SUMMARY', 'Esta semana': 'This week',
+        'Bloques': 'Blocks', 'Horas': 'Hours',
         'ÚLTIMOS BLOQUES CAPTURADOS': 'LAST CAPTURED BLOCKS',
-        'DESCARTADOS': 'DISCARDED',
-        'PERDIDOS': 'MISSED',
-        'hace': 'ago',
-        'días': 'days',
-        'horas': 'hours',
-        'min': 'min',
-        'Ver más': 'See more',
-        'Plan activo:': 'Active plan:',
-        'Renovar plan': 'Renew plan',
-        'días restantes': 'days remaining',
+        'DESCARTADOS': 'DISCARDED', 'PERDIDOS': 'MISSED',
+        'Capturados': 'Captured', 'Otros registros': 'Other records',
+        'Ver más': 'See more', 'Plan activo:': 'Active plan:',
+        'Renovar plan': 'Renew plan', 'días restantes': 'days remaining',
         'Soporte WhatsApp': 'WhatsApp Support',
-        'Racha': 'Streak',
         'días activo': 'days active',
-        '¡Tu bot lleva': 'Your bot has been',
-        'días seguidos activo!': 'consecutive days active!',
-        '🔥': '🔥',
-        // HISTORIAL
-        'Capturados': 'Captured',
-        'Otros registros': 'Other records',
-        'precio bajo': 'low price',
-        'fuera de horario': 'out of schedule',
-        'capturado': 'captured',
+        'precio bajo': 'low price', 'fuera de horario': 'out of schedule',
         'demasiado rápido': 'too fast',
-        'sin app abierta': 'app not open',
         // SETTINGS
-        'Configuración': 'Settings',
-        'Horario de búsqueda': 'Search schedule',
-        'Almacenes activos': 'Active warehouses',
-        'Agregar almacén': 'Add warehouse',
-        'Guardar cambios': 'Save changes',
-        'Activado': 'Enabled',
-        'Desactivado': 'Disabled',
+        'Configuración': 'Settings', 'Horario de búsqueda': 'Search schedule',
+        'Almacenes activos': 'Active warehouses', 'Agregar almacén': 'Add warehouse',
+        'Guardar cambios': 'Save changes', 'Activado': 'Enabled', 'Desactivado': 'Disabled',
         'Buscar almacén...': 'Search warehouse...',
         'Selecciona el almacén donde deseas trabajar': 'Select the warehouse where you want to work',
-        'Seleccionar todo': 'Select all',
         // PAYMENTS
-        'Planes': 'Plans',
-        'Calculadora ROI': 'ROI Calculator',
-        'días': 'days',
-        'Más popular': 'Most popular',
-        'Mejor valor': 'Best value',
-        'Activar plan': 'Activate plan',
-        'Bloques por día': 'Blocks per day',
-        'Valor por bloque': 'Value per block',
-        'Días activo': 'Active days',
-        'Ganancia estimada': 'Estimated earnings',
-        'Si capturas': 'If you capture',
+        'Calculadora ROI': 'ROI Calculator', 'Más popular': 'Most popular',
+        'Mejor valor': 'Best value', 'Activar plan': 'Activate plan',
+        'Bloques por día': 'Blocks per day', 'Valor por bloque': 'Value per block',
+        'Días activo': 'Active days', 'Ganancia estimada': 'Estimated earnings',
         // PROFILE
-        'Mi perfil': 'My profile',
-        'Mis ganancias con Ready4Drive': 'My Ready4Drive earnings',
+        'Mi perfil': 'My profile', 'Mis ganancias con Ready4Drive': 'My Ready4Drive earnings',
         'Total ganado histórico': 'Total historical earnings',
-        'Activo desde': 'Active since',
-        'Racha máx.': 'Max streak',
-        'Editar perfil': 'Edit profile',
-        'Cambiar contraseña': 'Change password',
-        'Notificaciones': 'Notifications',
-        'Idioma': 'Language',
-        'Cerrar sesión': 'Log out',
-        'Configuración de cuenta': 'Account settings',
+        'Activo desde': 'Active since', 'Racha máx.': 'Max streak',
+        'Editar perfil': 'Edit profile', 'Cambiar contraseña': 'Change password',
+        'Notificaciones': 'Notifications', 'Idioma': 'Language',
+        'Cerrar sesión': 'Log out', 'Configuración de cuenta': 'Account settings',
         // INVITATIONS
-        'Invitar amigos': 'Invite friends',
-        'Referidos': 'Referrals',
-        'Copiar link': 'Copy link',
-        'Compartir por WhatsApp': 'Share on WhatsApp',
-        'Pendiente': 'Pending',
-        'Activo': 'Active',
-        'Recordar por WhatsApp': 'Remind via WhatsApp',
-        'Recordar por SMS': 'Remind via SMS',
-        'Tus referidos': 'Your referrals',
-        'Cómo funciona': 'How it works',
+        'Invitar amigos': 'Invite friends', 'Referidos': 'Referrals',
+        'Copiar link': 'Copy link', 'Compartir por WhatsApp': 'Share on WhatsApp',
+        'Pendiente': 'Pending', 'Activo': 'Active',
+        'Recordar por WhatsApp': 'Remind via WhatsApp', 'Recordar por SMS': 'Remind via SMS',
+        'Tus referidos': 'Your referrals', 'Cómo funciona': 'How it works',
+      },
+      pt: {
+        // NAV
+        'Inicio': 'Início', 'Invitar': 'Convidar', 'Filtros': 'Filtros',
+        'Pagos': 'Pagamentos', 'Perfil': 'Perfil', 'Soporte': 'Suporte',
+        // SYSTEM
+        'Bot apagado': 'Bot desligado',
+        'Sistema detenido. Activa para capturar bloques automáticamente.': 'Sistema parado. Ative para capturar blocos automaticamente.',
+        'Escaneando bloques disponibles...': 'Escaneando blocos disponíveis...',
+        'Activo · buscando en Amazon Flex': 'Ativo · buscando no Amazon Flex',
+        // MODES
+        'MODO DE BÚSQUEDA': 'MODO DE BUSCA',
+        'Cauteloso': 'Cauteloso', 'Solo bloques de bajo riesgo': 'Apenas blocos de baixo risco',
+        'Balance riesgo/ganancia': 'Equilíbrio risco/ganho',
+        'Máximo': 'Máximo', 'Todos los bloques disponibles': 'Todos os blocos disponíveis',
+        // DASHBOARD
+        'RESUMEN DE SEMANA': 'RESUMO DA SEMANA', 'Esta semana': 'Esta semana',
+        'Bloques': 'Blocos', 'Horas': 'Horas',
+        'ÚLTIMOS BLOQUES CAPTURADOS': 'ÚLTIMOS BLOCOS CAPTURADOS',
+        'DESCARTADOS': 'DESCARTADOS', 'PERDIDOS': 'PERDIDOS',
+        'Capturados': 'Capturados', 'Otros registros': 'Outros registros',
+        'Ver más': 'Ver mais', 'Plan activo:': 'Plano ativo:',
+        'Renovar plan': 'Renovar plano', 'días restantes': 'dias restantes',
+        'Soporte WhatsApp': 'Suporte WhatsApp',
+        'días activo': 'dias ativo',
+        'precio bajo': 'preço baixo', 'fuera de horario': 'fora do horário',
+        'demasiado rápido': 'rápido demais',
+        // SETTINGS
+        'Configuración': 'Configuração', 'Horario de búsqueda': 'Horário de busca',
+        'Almacenes activos': 'Armazéns ativos', 'Agregar almacén': 'Adicionar armazém',
+        'Guardar cambios': 'Salvar alterações', 'Activado': 'Ativado', 'Desactivado': 'Desativado',
+        'Buscar almacén...': 'Buscar armazém...',
+        'Selecciona el almacén donde deseas trabajar': 'Selecione o armazém onde deseja trabalhar',
+        // PAYMENTS
+        'Calculadora ROI': 'Calculadora ROI', 'Más popular': 'Mais popular',
+        'Mejor valor': 'Melhor valor', 'Activar plan': 'Ativar plano',
+        'Bloques por día': 'Blocos por dia', 'Valor por bloque': 'Valor por bloco',
+        'Días activo': 'Dias ativo', 'Ganancia estimada': 'Ganho estimado',
+        // PROFILE
+        'Mi perfil': 'Meu perfil', 'Mis ganancias con Ready4Drive': 'Meus ganhos com Ready4Drive',
+        'Total ganado histórico': 'Total histórico ganho',
+        'Activo desde': 'Ativo desde', 'Racha máx.': 'Sequência máx.',
+        'Editar perfil': 'Editar perfil', 'Cambiar contraseña': 'Alterar senha',
+        'Notificaciones': 'Notificações', 'Idioma': 'Idioma',
+        'Cerrar sesión': 'Sair', 'Configuración de cuenta': 'Configurações da conta',
+        // INVITATIONS
+        'Invitar amigos': 'Convidar amigos', 'Referidos': 'Indicações',
+        'Copiar link': 'Copiar link', 'Compartir por WhatsApp': 'Compartilhar no WhatsApp',
+        'Pendiente': 'Pendente', 'Activo': 'Ativo',
+        'Recordar por WhatsApp': 'Lembrar pelo WhatsApp', 'Recordar por SMS': 'Lembrar por SMS',
+        'Tus referidos': 'Suas indicações', 'Cómo funciona': 'Como funciona',
       }
     };
 
-    let currentLang = 'es'; // in-memory only (no storage)
+    var LABELS = { es: '🌐 ES', en: '🌐 EN', pt: '🌐 PT' };
+    var CYCLE  = { es: 'en', en: 'pt', pt: 'es' };
+    var currentLang = 'es';
+    var origTextNodes = [];
+    var origPlaceholders = [];
+    var domStored = false;
+
+    function storeDOM() {
+      if (domStored) return;
+      domStored = true;
+      // Store all text nodes
+      var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+        acceptNode: function(node) {
+          var p = node.parentElement;
+          if (!p) return NodeFilter.FILTER_REJECT;
+          if (p.closest('script,style,svg')) return NodeFilter.FILTER_REJECT;
+          if (!node.textContent.trim()) return NodeFilter.FILTER_SKIP;
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      });
+      while (walker.nextNode()) {
+        origTextNodes.push({ node: walker.currentNode, text: walker.currentNode.textContent });
+      }
+      // Store placeholders
+      document.querySelectorAll('[placeholder]').forEach(function(el) {
+        origPlaceholders.push({ el: el, ph: el.getAttribute('placeholder') });
+      });
+    }
 
     function applyLang(lang) {
+      storeDOM();
       currentLang = lang;
-      // lang stored in memory only
-
-      // Update button label
-      document.querySelectorAll('.topbar-lang').forEach(btn => {
-        btn.textContent = lang === 'es' ? '🌐 ES' : '🌐 EN';
+      // Update button labels
+      document.querySelectorAll('.topbar-lang').forEach(function(btn) {
+        btn.textContent = LABELS[lang];
         btn.setAttribute('data-lang', lang);
       });
 
-      if (lang === 'en') {
-        translateDOM(document.body, TRANS.en);
-      } else {
-        // Reload page to restore original Spanish (simplest approach)
-        // But since we can't reload, we store originals and restore
-        restoreOriginals(document.body);
-      }
-    }
+      var dict = TRANS[lang] || null;
 
-    // Store original text nodes before any translation
-    const originals = new WeakMap();
-
-    function storeOriginal(node) {
-      if (!originals.has(node)) {
-        originals.set(node, node.textContent);
-      }
-    }
-
-    function translateDOM(root, dict) {
-      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
-        acceptNode(node) {
-          const parent = node.parentElement;
-          if (!parent) return NodeFilter.FILTER_REJECT;
-          const tag = parent.tagName;
-          // Skip script, style, svg text
-          if (['SCRIPT','STYLE','SVG'].includes(tag)) return NodeFilter.FILTER_REJECT;
-          if (parent.closest('svg')) return NodeFilter.FILTER_REJECT;
-          const txt = node.textContent.trim();
-          if (!txt) return NodeFilter.FILTER_SKIP;
-          return NodeFilter.FILTER_ACCEPT;
-        }
-      });
-      const nodes = [];
-      while (walker.nextNode()) nodes.push(walker.currentNode);
-
-      nodes.forEach(node => {
-        storeOriginal(node);
-        let txt = node.textContent;
-        // Try full match first
-        if (dict[txt.trim()]) {
-          node.textContent = txt.replace(txt.trim(), dict[txt.trim()]);
+      // Restore originals first, then apply new dict
+      origTextNodes.forEach(function(entry) {
+        var orig = entry.text;
+        if (!dict) {
+          entry.node.textContent = orig;
           return;
         }
-        // Try partial replacements
-        let newTxt = txt;
-        Object.entries(dict).forEach(([es, en]) => {
-          if (newTxt.includes(es)) {
-            newTxt = newTxt.split(es).join(en);
-          }
-        });
-        if (newTxt !== txt) node.textContent = newTxt;
+        var result = orig;
+        // Full match
+        if (dict[orig.trim()]) {
+          result = orig.replace(orig.trim(), dict[orig.trim()]);
+        } else {
+          // Partial
+          Object.keys(dict).forEach(function(key) {
+            if (result.indexOf(key) !== -1) {
+              result = result.split(key).join(dict[key]);
+            }
+          });
+        }
+        entry.node.textContent = result;
       });
 
-      // Also translate placeholders
-      root.querySelectorAll('[placeholder]').forEach(el => {
-        storeOriginal(el);
-        const ph = el.getAttribute('placeholder');
-        if (dict[ph]) el.setAttribute('placeholder', dict[ph]);
-      });
-    }
-
-    function restoreOriginals(root) {
-      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
-        acceptNode(node) {
-          if (!node.parentElement) return NodeFilter.FILTER_REJECT;
-          if (node.parentElement.closest('svg')) return NodeFilter.FILTER_REJECT;
-          return NodeFilter.FILTER_ACCEPT;
+      origPlaceholders.forEach(function(entry) {
+        if (dict && dict[entry.ph]) {
+          entry.el.setAttribute('placeholder', dict[entry.ph]);
+        } else {
+          entry.el.setAttribute('placeholder', entry.ph);
         }
       });
-      const nodes = [];
-      while (walker.nextNode()) nodes.push(walker.currentNode);
-      nodes.forEach(node => {
-        if (originals.has(node)) node.textContent = originals.get(node);
-      });
-      // Restore placeholders
-      root.querySelectorAll('[placeholder]').forEach(el => {
-        if (originals.has(el)) el.setAttribute('placeholder', originals.get(el));
-      });
     }
 
-    // Bind button
-    function bindLangBtn() {
-      document.querySelectorAll('.topbar-lang').forEach(btn => {
+    function init() {
+      document.querySelectorAll('.topbar-lang').forEach(function(btn) {
         btn.addEventListener('click', function() {
-          const newLang = currentLang === 'es' ? 'en' : 'es';
-          applyLang(newLang);
+          applyLang(CYCLE[currentLang]);
         });
       });
-      // Apply stored preference on load
-      if (currentLang === 'en') {
-        // Small delay so DOM is ready
-        setTimeout(() => applyLang('en'), 100);
-      }
     }
 
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', bindLangBtn);
+      document.addEventListener('DOMContentLoaded', init);
     } else {
-      bindLangBtn();
+      init();
     }
   })();
-  // ===== FIN SELECTOR DE IDIOMA =====
+  // ===== FIN SELECTOR DE IDIOMA ES/EN/PT =====
+</script>
 
 </body>
 </html>

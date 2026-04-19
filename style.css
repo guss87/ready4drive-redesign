@@ -123,14 +123,32 @@ input, select { font-family: inherit; }
 
 .topbar-lang {
   font-size: 12px;
-  font-weight: 600;
-  color: var(--text-secondary);
-  padding: 4px 10px;
-  border: 1px solid var(--border-light);
+  font-weight: 700;
+  color: var(--brand-primary);
+  padding: 5px 11px;
+  border: 1.5px solid rgba(0,194,124,0.3);
   border-radius: var(--radius-full);
+  background: rgba(0,194,124,0.07);
   display: flex;
   align-items: center;
   gap: 4px;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+.topbar-lang:hover {
+  background: rgba(0,194,124,0.15);
+  border-color: var(--brand-primary);
+}
+.topbar-lang[data-lang="en"] {
+  color: #60a5fa;
+  border-color: rgba(96,165,250,0.35);
+  background: rgba(96,165,250,0.08);
+}
+.topbar-lang[data-lang="pt"] {
+  color: #f59e0b;
+  border-color: rgba(245,158,11,0.35);
+  background: rgba(245,158,11,0.08);
 }
 
 .topbar-avatar {
