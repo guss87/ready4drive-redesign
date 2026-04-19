@@ -1210,11 +1210,11 @@
       }
     };
 
-    let currentLang = localStorage.getItem('r4d_lang') || 'es';
+    let currentLang = 'es'; // in-memory only (no storage)
 
     function applyLang(lang) {
       currentLang = lang;
-      try { localStorage.setItem('r4d_lang', lang); } catch(e) {}
+      // lang stored in memory only
 
       // Update button label
       document.querySelectorAll('.topbar-lang').forEach(btn => {
