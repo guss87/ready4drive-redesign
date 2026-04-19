@@ -210,6 +210,63 @@
     .warehouse-item:hover { background: rgba(0,194,124,0.04); }
     .warehouse-item:active { background: rgba(0,194,124,0.08); }
 
+
+    /* RESUMEN CONFIG ACTIVA */
+    .config-summary {
+      background: rgba(0,194,124,0.07);
+      border: 1px solid rgba(0,194,124,0.2);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: var(--space-md);
+    }
+    .config-summary-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--brand-primary); flex-shrink: 0;
+    }
+    .config-summary-text { font-size: 12px; font-weight: 600; color: var(--brand-primary); line-height: 1.5; }
+    .config-summary-edit { font-size: 11px; color: var(--text-muted); margin-left: auto; flex-shrink: 0; }
+
+    /* MODO SECTION */
+    .mode-section-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-md);
+      margin-bottom: var(--space-md);
+    }
+    .mode-section-title {
+      font-size: 13px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 0.8px; color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+    .mode-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 11px 14px; border-radius: var(--radius-md);
+      background: var(--bg-surface); border: 1.5px solid transparent;
+      cursor: pointer; transition: var(--transition); margin-bottom: 8px;
+    }
+    .mode-row:last-child { margin-bottom: 0; }
+    .mode-row.sel-safe    { border-color: var(--brand-primary); background: rgba(0,194,124,0.08); }
+    .mode-row.sel-premium { border-color: #8B5CF6; background: rgba(139,92,246,0.08); }
+    .mode-row.sel-max     { border-color: var(--brand-accent); background: rgba(255,107,43,0.08); }
+    .mode-row-icon { font-size: 20px; flex-shrink: 0; }
+    .mode-row-info { flex: 1; }
+    .mode-row-name { font-size: 13px; font-weight: 800; }
+    .mode-row-desc { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+    .mode-row-radio {
+      width: 18px; height: 18px; border-radius: 50%;
+      border: 2px solid var(--border-light); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .mode-row-radio .dot { width: 8px; height: 8px; border-radius: 50%; display: none; }
+    .mode-row.sel-safe    .mode-row-radio { border-color: var(--brand-primary); }
+    .mode-row.sel-safe    .mode-row-radio .dot { display: block; background: var(--brand-primary); }
+    .mode-row.sel-premium .mode-row-radio { border-color: #8B5CF6; }
+    .mode-row.sel-premium .mode-row-radio .dot { display: block; background: #8B5CF6; }
+    .mode-row.sel-max     .mode-row-radio { border-color: var(--brand-accent); }
+    .mode-row.sel-max     .mode-row-radio .dot { display: block; background: var(--brand-accent); }
+
   </style>
 </head>
 <body>
@@ -259,6 +316,47 @@
 
       <!-- WEEKLY SCHEDULE -->
       <div class="section-header">
+        <!-- RESUMEN CONFIG ACTIVA -->
+        <div class="config-summary">
+          <div class="config-summary-dot"></div>
+          <div class="config-summary-text" id="configSummaryText">
+            Modo Cauteloso · 3 almacenes · Lun–Vie
+          </div>
+          <span class="config-summary-edit">Config activa</span>
+        </div>
+
+        <!-- SECCIÓN MODO DE BÚSQUEDA -->
+        <div class="mode-section-card">
+          <div class="mode-section-title">Modo de búsqueda</div>
+
+          <div class="mode-row sel-safe" id="sModeSafe" onclick="setSettingsMode('safe')">
+            <span class="mode-row-icon">🛡️</span>
+            <div class="mode-row-info">
+              <div class="mode-row-name" style="color:var(--brand-primary);">Cauteloso</div>
+              <div class="mode-row-desc">Precio mínimo estricto, menos riesgo</div>
+            </div>
+            <div class="mode-row-radio"><div class="dot"></div></div>
+          </div>
+
+          <div class="mode-row" id="sModePremium" onclick="setSettingsMode('premium')">
+            <span class="mode-row-icon">🌿</span>
+            <div class="mode-row-info">
+              <div class="mode-row-name" style="color:#8B5CF6;">Premium</div>
+              <div class="mode-row-desc">Solo Fresh y Whole Foods — mejor pago</div>
+            </div>
+            <div class="mode-row-radio"><div class="dot"></div></div>
+          </div>
+
+          <div class="mode-row" id="sModeMax" onclick="setSettingsMode('max')">
+            <span class="mode-row-icon">⚡</span>
+            <div class="mode-row-info">
+              <div class="mode-row-name" style="color:var(--brand-accent);">Máximo</div>
+              <div class="mode-row-desc">Captura todo, máxima velocidad</div>
+            </div>
+            <div class="mode-row-radio"><div class="dot"></div></div>
+          </div>
+        </div>
+
         <span class="section-title">Horario semanal</span>
         <span class="section-action">Toca un día</span>
       </div>
@@ -525,6 +623,21 @@
   </div>
 
   <script>
+
+    function setSettingsMode(m) {
+      ['sModeSafe','sModePremium','sModeMax'].forEach(id => {
+        document.getElementById(id).className = 'mode-row';
+      });
+      const names = { safe: 'Cauteloso', premium: 'Premium', max: 'Máximo' };
+      if (m === 'safe')    document.getElementById('sModeSafe').className    = 'mode-row sel-safe';
+      if (m === 'premium') document.getElementById('sModePremium').className = 'mode-row sel-premium';
+      if (m === 'max')     document.getElementById('sModeMax').className     = 'mode-row sel-max';
+      // Actualizar resumen
+      const warehouseCount = document.querySelectorAll('.warehouse-item').length;
+      document.getElementById('configSummaryText').textContent =
+        'Modo ' + names[m] + ' · ' + warehouseCount + ' almacenes · Lun–Vie';
+    }
+
 
     // ===== WAREHOUSE EDIT MODAL =====
     function handleWarehouseClick(el) {

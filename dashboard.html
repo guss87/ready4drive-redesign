@@ -133,28 +133,55 @@
     }
     .status-main-text { font-weight: 700; font-size: 13px; }
     .status-sub-text { font-size: 11px; opacity: 0.75; margin-left: auto; }
-    .search-modes { display: flex; gap: 8px; }
-    .mode-btn {
-      flex: 1; padding: 10px 8px;
+    /* MODO CARDS GRANDES */
+    .search-modes { display: flex; flex-direction: column; gap: 8px; }
+    .mode-card {
+      width: 100%; padding: 14px 16px;
       background: var(--bg-surface);
       border: 1.5px solid transparent;
       border-radius: var(--radius-md);
-      font-size: 11px; font-weight: 700;
-      color: var(--text-muted);
-      display: flex; flex-direction: column; align-items: center; gap: 6px;
-      cursor: pointer; transition: var(--transition);
+      display: flex; align-items: center; gap: 14px;
+      cursor: pointer; transition: var(--transition); text-align: left;
     }
-    .mode-btn.active {
+    .mode-card.active-safe {
       border-color: var(--brand-primary);
       background: rgba(0,194,124,0.08);
-      color: var(--brand-primary);
     }
-    .mode-btn.active-orange {
+    .mode-card.active-premium {
+      border-color: #8B5CF6;
+      background: rgba(139,92,246,0.08);
+    }
+    .mode-card.active-max {
       border-color: var(--brand-accent);
       background: rgba(255,107,43,0.08);
-      color: var(--brand-accent);
     }
-    .mode-btn svg { width: 22px; height: 22px; }
+    .mode-card-icon {
+      width: 40px; height: 40px; border-radius: var(--radius-md);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-size: 20px;
+    }
+    .mode-card-body { flex: 1; }
+    .mode-card-name { font-size: 14px; font-weight: 800; margin-bottom: 2px; }
+    .mode-card-desc { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
+    .mode-card-badge {
+      font-size: 9px; font-weight: 800; padding: 3px 8px;
+      border-radius: var(--radius-full); text-transform: uppercase; letter-spacing: 0.5px;
+      flex-shrink: 0;
+    }
+    /* Indicador radio */
+    .mode-radio {
+      width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0;
+      border: 2px solid var(--border-light);
+      display: flex; align-items: center; justify-content: center;
+      transition: var(--transition);
+    }
+    .mode-radio .dot { width: 8px; height: 8px; border-radius: 50%; display: none; }
+    .mode-card.active-safe .mode-radio { border-color: var(--brand-primary); }
+    .mode-card.active-safe .mode-radio .dot { display: block; background: var(--brand-primary); }
+    .mode-card.active-premium .mode-radio { border-color: #8B5CF6; }
+    .mode-card.active-premium .mode-radio .dot { display: block; background: #8B5CF6; }
+    .mode-card.active-max .mode-radio { border-color: var(--brand-accent); }
+    .mode-card.active-max .mode-radio .dot { display: block; background: var(--brand-accent); }
 
     /* EARNINGS TABS */
     .earnings-section {
@@ -237,10 +264,123 @@
       z-index: 50; transition: var(--transition);
     }
     .wa-float:hover { transform: scale(1.05); }
+
+    /* ONBOARDING OVERLAY */
+    .onboarding-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.88); backdrop-filter: blur(12px);
+      z-index: 500; align-items: flex-end; justify-content: center;
+    }
+    .onboarding-overlay.open { display: flex; }
+    .onboarding-sheet {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 24px 24px 0 0;
+      width: 100%; max-width: 480px;
+      padding: 28px 24px 40px;
+      animation: slideUp 0.35s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    @keyframes slideUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+    .onboarding-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 24px;
+    }
+    .onboarding-steps-dots {
+      display: flex; gap: 6px;
+    }
+    .step-dot {
+      width: 8px; height: 8px; border-radius: 4px;
+      background: var(--bg-surface); transition: all 0.3s;
+    }
+    .step-dot.active { width: 24px; background: var(--brand-primary); }
+    .onboarding-skip {
+      font-size: 12px; color: var(--text-muted); font-weight: 600; cursor: pointer;
+    }
+    .onboarding-step { display: none; }
+    .onboarding-step.visible { display: block; }
+    .onboarding-emoji { font-size: 52px; margin-bottom: 16px; text-align: center; }
+    .onboarding-title { font-size: 22px; font-weight: 900; margin-bottom: 8px; text-align: center; line-height: 1.2; }
+    .onboarding-body { font-size: 14px; color: var(--text-secondary); text-align: center; line-height: 1.6; margin-bottom: 28px; }
+    .onboarding-highlight { color: var(--brand-primary); font-weight: 700; }
+    .onboarding-bullets { list-style: none; text-align: left; margin: 12px 0 20px; display: flex; flex-direction: column; gap: 10px; }
+    .onboarding-bullets li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 13px; color: var(--text-secondary);
+    }
+    .onboarding-bullets li span:first-child { font-size: 18px; flex-shrink: 0; }
+    .onboarding-btn {
+      width: 100%; padding: 16px;
+      background: var(--brand-primary); color: #fff;
+      font-size: 16px; font-weight: 800; border: none;
+      border-radius: var(--radius-md); cursor: pointer;
+      font-family: inherit; transition: var(--transition);
+    }
+    .onboarding-btn:active { opacity: 0.9; transform: scale(0.98); }
+
   </style>
 </head>
 <body>
   <div class="app-shell">
+
+    <!-- ONBOARDING OVERLAY (primer login) -->
+    <div class="onboarding-overlay open" id="onboardingOverlay">
+      <div class="onboarding-sheet">
+        <div class="onboarding-header">
+          <div class="onboarding-steps-dots">
+            <div class="step-dot active" id="dot0"></div>
+            <div class="step-dot" id="dot1"></div>
+            <div class="step-dot" id="dot2"></div>
+          </div>
+          <span class="onboarding-skip" onclick="closeOnboarding()">Saltar</span>
+        </div>
+
+        <!-- PASO 1 -->
+        <div class="onboarding-step visible" id="step0">
+          <div class="onboarding-emoji">🤖</div>
+          <div class="onboarding-title">Tu robot de Amazon Flex</div>
+          <div class="onboarding-body">
+            Ready4Drive es un <span class="onboarding-highlight">bot automático</span> que captura bloques en Amazon Flex por ti — 24/7, mientras duermes o manejas.
+          </div>
+          <ul class="onboarding-bullets">
+            <li><span>⚡</span><span>Reacciona en milisegundos cuando aparece un bloque</span></li>
+            <li><span>💵</span><span>Solo acepta bloques que cumplan tu precio mínimo</span></li>
+            <li><span>📱</span><span>Tú descansas, el bot trabaja</span></li>
+          </ul>
+          <button class="onboarding-btn" onclick="nextStep()">Entendido — continuar →</button>
+        </div>
+
+        <!-- PASO 2 -->
+        <div class="onboarding-step" id="step1">
+          <div class="onboarding-emoji">⚙️</div>
+          <div class="onboarding-title">Elige tu modo de búsqueda</div>
+          <div class="onboarding-body">
+            Tienes 3 modos según tu estilo de trabajo
+          </div>
+          <ul class="onboarding-bullets">
+            <li><span>🛡️</span><span><strong style="color:var(--brand-primary);">Cauteloso</strong> — Precio estricto, bloques seguros y estables</span></li>
+            <li><span>🌿</span><span><strong style="color:#8B5CF6;">Premium</strong> — Solo Fresh y Whole Foods, mejor pago por hora</span></li>
+            <li><span>⚡</span><span><strong style="color:var(--brand-accent);">Máximo</strong> — Captura todo, velocidad total en horas pico</span></li>
+          </ul>
+          <button class="onboarding-btn" onclick="nextStep()">Siguiente →</button>
+        </div>
+
+        <!-- PASO 3 -->
+        <div class="onboarding-step" id="step2">
+          <div class="onboarding-emoji">🚀</div>
+          <div class="onboarding-title">¡Listo para ganar más!</div>
+          <div class="onboarding-body">
+            Activa el sistema con el <span class="onboarding-highlight">toggle verde</span> y selecciona tus almacenes favoritos en <strong>Filtros</strong>.<br><br>
+            ¿Dudas? Escríbenos por <span class="onboarding-highlight">WhatsApp</span> — respondemos rápido.
+          </div>
+          <button class="onboarding-btn" onclick="closeOnboarding()" style="background:var(--brand-primary);">¡Empezar a ganar! 💵</button>
+        </div>
+
+      </div>
+    </div>
+
 
     <!-- TOP BAR -->
     <header class="topbar">
@@ -333,19 +473,40 @@
           <span class="status-main-text" id="statusMainText">Sistema apagado — no está capturando bloques</span>
           <span class="status-sub-text" id="statusSubText"></span>
         </div>
-        <div class="search-modes">
-          <button class="mode-btn primary-action active" id="modeInstant">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-            I've arrived<br>Instant
+        <div class="search-modes" id="searchModes">
+
+          <!-- MODO 1: CAUTELOSO -->
+          <button class="mode-card active-safe" id="modeSafe" onclick="setMode('safe')">
+            <div class="mode-card-icon" style="background:rgba(0,194,124,0.12);">🛡️</div>
+            <div class="mode-card-body">
+              <div class="mode-card-name" style="color:var(--brand-primary);">Cauteloso</div>
+              <div class="mode-card-desc">Captura bloques seguros con buen precio por hora. Menos riesgo, ganancias estables.</div>
+            </div>
+            <div class="mode-radio"><div class="dot"></div></div>
           </button>
-          <button class="mode-btn" id="modeArrived" onclick="setMode('arrived')">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            I've arrived
+
+          <!-- MODO 2: PREMIUM -->
+          <button class="mode-card" id="modePremium" onclick="setMode('premium')">
+            <div class="mode-card-icon" style="background:rgba(139,92,246,0.12);">🌿</div>
+            <div class="mode-card-body">
+              <div class="mode-card-name" style="color:#8B5CF6;">Premium</div>
+              <div class="mode-card-desc">Solo Fresh y Whole Foods. Bloques mejor pagados, clientes de alto valor.</div>
+            </div>
+            <div class="mode-card-badge" style="background:rgba(139,92,246,0.15);color:#8B5CF6;">WF · Fresh</div>
+            <div class="mode-radio"><div class="dot"></div></div>
           </button>
-          <button class="mode-btn" id="modeInRoute" onclick="setMode('inroute')">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            En ruta
+
+          <!-- MODO 3: MÁXIMO -->
+          <button class="mode-card" id="modeMax" onclick="setMode('max')">
+            <div class="mode-card-icon" style="background:rgba(255,107,43,0.12);">⚡</div>
+            <div class="mode-card-body">
+              <div class="mode-card-name" style="color:var(--brand-accent);">Máximo</div>
+              <div class="mode-card-desc">Captura todo, máxima velocidad. Sin filtros — ideal para horas pico.</div>
+            </div>
+            <div class="mode-card-badge" style="background:rgba(255,107,43,0.15);color:var(--brand-accent);">TURBO</div>
+            <div class="mode-radio"><div class="dot"></div></div>
           </button>
+
         </div>
       </div>
 
@@ -370,6 +531,20 @@
       </div>
 
       <!-- OFFERS SECTION -->
+      <!-- WHATSAPP SOPORTE -->
+      <a href="https://wa.me/19547010640" target="_blank" style="text-decoration:none; display:block; margin-bottom:var(--space-md);">
+        <div style="background:rgba(37,211,102,0.08); border:1px solid rgba(37,211,102,0.22); border-radius:var(--radius-md); padding:12px 16px; display:flex; align-items:center; gap:12px;">
+          <div style="width:38px;height:38px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+          </div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:700;color:#25D366;">Soporte por WhatsApp</div>
+            <div style="font-size:11px;color:var(--text-muted);">¿Tienes dudas? Escríbenos ahora</div>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#25D366" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+
       <div class="section-header">
         <span class="section-title">Bloques capturados</span>
       </div>
@@ -438,6 +613,24 @@
   </div>
 
   <script>
+
+    // ONBOARDING
+    let currentStep = 0;
+    // En producción usar: if (!localStorage.getItem('r4d_onboarded')) { ... }
+    function nextStep() {
+      const steps = document.querySelectorAll('.onboarding-step');
+      const dots  = document.querySelectorAll('.step-dot');
+      steps[currentStep].classList.remove('visible');
+      dots[currentStep].classList.remove('active');
+      currentStep++;
+      steps[currentStep].classList.add('visible');
+      dots[currentStep].classList.add('active');
+    }
+    function closeOnboarding() {
+      document.getElementById('onboardingOverlay').classList.remove('open');
+      // En producción: localStorage.setItem('r4d_onboarded', '1');
+    }
+
     function toggleSearch() {
       const toggle = document.getElementById('searchToggle');
       const card = document.querySelector('.search-toggle-card');
@@ -463,11 +656,12 @@
       }
     }
     function setMode(m) {
-      ['modeInstant','modeArrived','modeInRoute'].forEach(id => {
-        document.getElementById(id).className = 'mode-btn';
-      });
-      if (m === 'arrived') document.getElementById('modeArrived').className = 'mode-btn primary-action active';
-      if (m === 'inroute') document.getElementById('modeInRoute').className = 'mode-btn accent-action active';
+      document.getElementById('modeSafe').className    = 'mode-card';
+      document.getElementById('modePremium').className = 'mode-card';
+      document.getElementById('modeMax').className     = 'mode-card';
+      if (m === 'safe')    document.getElementById('modeSafe').className    = 'mode-card active-safe';
+      if (m === 'premium') document.getElementById('modePremium').className = 'mode-card active-premium';
+      if (m === 'max')     document.getElementById('modeMax').className     = 'mode-card active-max';
     }
     function setTab(el, tab) {
       document.querySelectorAll('.earnings-tab').forEach(t => t.classList.remove('active'));

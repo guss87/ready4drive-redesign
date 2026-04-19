@@ -63,6 +63,50 @@
     .payment-form { margin-bottom: var(--space-md); }
     .card-icon-row { display: flex; gap: 8px; margin-bottom: 12px; }
     .card-icon { font-size: 20px; }
+
+    /* ROI CALCULATOR */
+    .roi-calc {
+      background: var(--bg-card);
+      border: 1.5px solid rgba(0,194,124,0.25);
+      border-radius: var(--radius-lg);
+      padding: var(--space-md);
+      margin-bottom: var(--space-md);
+    }
+    .roi-calc-title {
+      font-size: 15px; font-weight: 800; margin-bottom: 4px;
+    }
+    .roi-calc-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 18px; }
+    .roi-slider-row { display: flex; flex-direction: column; gap: 14px; margin-bottom: 18px; }
+    .roi-slider-label {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 13px; font-weight: 700; margin-bottom: 8px;
+    }
+    .roi-slider-val {
+      font-size: 14px; font-weight: 800; color: var(--brand-primary);
+      background: rgba(0,194,124,0.12); padding: 2px 10px; border-radius: var(--radius-full);
+    }
+    input[type=range].roi-range {
+      -webkit-appearance: none; width: 100%; height: 6px;
+      border-radius: 3px; background: var(--bg-surface); outline: none;
+    }
+    input[type=range].roi-range::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%;
+      background: var(--brand-primary); cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,194,124,0.4);
+    }
+    .roi-result {
+      background: rgba(0,194,124,0.08);
+      border: 1px solid rgba(0,194,124,0.2);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    }
+    .roi-stat { text-align: center; }
+    .roi-stat-val { font-size: 22px; font-weight: 900; color: var(--brand-primary); }
+    .roi-stat-label { font-size: 10px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+    .roi-footer { text-align: center; font-size: 11px; color: var(--text-muted); margin-top: 10px; }
+    .roi-footer strong { color: var(--brand-primary); }
+
   </style>
 </head>
 <body>
@@ -216,6 +260,29 @@
   </div>
 
   <script>
+
+    function calcROI() {
+      const hrs   = parseInt(document.getElementById('roiHrs').value);
+      const days  = parseInt(document.getElementById('roiDays').value);
+      const rate  = parseInt(document.getElementById('roiRate').value);
+      document.getElementById('roiHrsVal').textContent  = hrs + 'h';
+      document.getElementById('roiDaysVal').textContent = days + ' día' + (days > 1 ? 's' : '');
+      document.getElementById('roiRateVal').textContent = '$' + rate + '/h';
+      const weekly  = hrs * days * rate;
+      const monthly = Math.round(weekly * 4.3);
+      const blocks  = Math.round(hrs * days / 2);
+      // Plan más barato = $33.70 (3 días)
+      const planCost = 33.70;
+      const roi = Math.round(weekly / planCost);
+      document.getElementById('roiWeekly').textContent  = '$' + weekly.toLocaleString();
+      document.getElementById('roiMonthly').textContent = '$' + monthly.toLocaleString();
+      document.getElementById('roiBlocks').textContent  = '~' + blocks;
+      document.getElementById('roiRoi').textContent     = roi + 'x';
+      // Días para recuperar
+      const daysBack = (planCost / (hrs * rate)).toFixed(1);
+      document.getElementById('roiDays2').textContent   = '~' + daysBack + ' día' + (parseFloat(daysBack) > 1 ? 's' : '');
+    }
+
     function selectPlan(el, days, price) {
       document.querySelectorAll('.plan-card').forEach(c => {
         c.classList.remove('selected');
