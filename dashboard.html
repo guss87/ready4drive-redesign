@@ -133,55 +133,45 @@
     }
     .status-main-text { font-weight: 700; font-size: 13px; }
     .status-sub-text { font-size: 11px; opacity: 0.75; margin-left: auto; }
-    /* MODO CARDS GRANDES */
-    .search-modes { display: flex; flex-direction: column; gap: 8px; }
-    .mode-card {
-      width: 100%; padding: 14px 16px;
+    /* MODO PILLS COMPACTOS */
+    .search-modes { display: flex; flex-direction: column; gap: 10px; }
+    .mode-pills-row { display: flex; gap: 8px; }
+    .mode-pill {
+      flex: 1; padding: 9px 6px;
       background: var(--bg-surface);
       border: 1.5px solid transparent;
       border-radius: var(--radius-md);
-      display: flex; align-items: center; gap: 14px;
-      cursor: pointer; transition: var(--transition); text-align: left;
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      cursor: pointer; transition: var(--transition);
+      font-family: inherit;
     }
-    .mode-card.active-safe {
+    .mode-pill-icon { font-size: 18px; line-height: 1; }
+    .mode-pill-label { font-size: 11px; font-weight: 800; color: var(--text-muted); }
+    .mode-pill.sel-safe {
       border-color: var(--brand-primary);
-      background: rgba(0,194,124,0.08);
+      background: rgba(0,194,124,0.09);
     }
-    .mode-card.active-premium {
+    .mode-pill.sel-safe .mode-pill-label { color: var(--brand-primary); }
+    .mode-pill.sel-premium {
       border-color: #8B5CF6;
-      background: rgba(139,92,246,0.08);
+      background: rgba(139,92,246,0.09);
     }
-    .mode-card.active-max {
+    .mode-pill.sel-premium .mode-pill-label { color: #8B5CF6; }
+    .mode-pill.sel-max {
       border-color: var(--brand-accent);
-      background: rgba(255,107,43,0.08);
+      background: rgba(255,107,43,0.09);
     }
-    .mode-card-icon {
-      width: 40px; height: 40px; border-radius: var(--radius-md);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; font-size: 20px;
+    .mode-pill.sel-max .mode-pill-label { color: var(--brand-accent); }
+    /* Descripción dinámica */
+    .mode-desc-bar {
+      display: flex; align-items: center; gap: 8px;
+      padding: 9px 12px; border-radius: var(--radius-sm);
+      background: var(--bg-surface);
+      font-size: 12px; font-weight: 600; color: var(--text-secondary);
+      transition: all 0.2s;
+      min-height: 38px;
     }
-    .mode-card-body { flex: 1; }
-    .mode-card-name { font-size: 14px; font-weight: 800; margin-bottom: 2px; }
-    .mode-card-desc { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
-    .mode-card-badge {
-      font-size: 9px; font-weight: 800; padding: 3px 8px;
-      border-radius: var(--radius-full); text-transform: uppercase; letter-spacing: 0.5px;
-      flex-shrink: 0;
-    }
-    /* Indicador radio */
-    .mode-radio {
-      width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0;
-      border: 2px solid var(--border-light);
-      display: flex; align-items: center; justify-content: center;
-      transition: var(--transition);
-    }
-    .mode-radio .dot { width: 8px; height: 8px; border-radius: 50%; display: none; }
-    .mode-card.active-safe .mode-radio { border-color: var(--brand-primary); }
-    .mode-card.active-safe .mode-radio .dot { display: block; background: var(--brand-primary); }
-    .mode-card.active-premium .mode-radio { border-color: #8B5CF6; }
-    .mode-card.active-premium .mode-radio .dot { display: block; background: #8B5CF6; }
-    .mode-card.active-max .mode-radio { border-color: var(--brand-accent); }
-    .mode-card.active-max .mode-radio .dot { display: block; background: var(--brand-accent); }
+    .mode-desc-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
 
     /* EARNINGS TABS */
     .earnings-section {
@@ -474,39 +464,25 @@
           <span class="status-sub-text" id="statusSubText"></span>
         </div>
         <div class="search-modes" id="searchModes">
-
-          <!-- MODO 1: CAUTELOSO -->
-          <button class="mode-card active-safe" id="modeSafe" onclick="setMode('safe')">
-            <div class="mode-card-icon" style="background:rgba(0,194,124,0.12);">🛡️</div>
-            <div class="mode-card-body">
-              <div class="mode-card-name" style="color:var(--brand-primary);">Cauteloso</div>
-              <div class="mode-card-desc">Captura bloques seguros con buen precio por hora. Menos riesgo, ganancias estables.</div>
-            </div>
-            <div class="mode-radio"><div class="dot"></div></div>
-          </button>
-
-          <!-- MODO 2: PREMIUM -->
-          <button class="mode-card" id="modePremium" onclick="setMode('premium')">
-            <div class="mode-card-icon" style="background:rgba(139,92,246,0.12);">🌿</div>
-            <div class="mode-card-body">
-              <div class="mode-card-name" style="color:#8B5CF6;">Premium</div>
-              <div class="mode-card-desc">Solo Fresh y Whole Foods. Bloques mejor pagados, clientes de alto valor.</div>
-            </div>
-            <div class="mode-card-badge" style="background:rgba(139,92,246,0.15);color:#8B5CF6;">WF · Fresh</div>
-            <div class="mode-radio"><div class="dot"></div></div>
-          </button>
-
-          <!-- MODO 3: MÁXIMO -->
-          <button class="mode-card" id="modeMax" onclick="setMode('max')">
-            <div class="mode-card-icon" style="background:rgba(255,107,43,0.12);">⚡</div>
-            <div class="mode-card-body">
-              <div class="mode-card-name" style="color:var(--brand-accent);">Máximo</div>
-              <div class="mode-card-desc">Captura todo, máxima velocidad. Sin filtros — ideal para horas pico.</div>
-            </div>
-            <div class="mode-card-badge" style="background:rgba(255,107,43,0.15);color:var(--brand-accent);">TURBO</div>
-            <div class="mode-radio"><div class="dot"></div></div>
-          </button>
-
+          <div class="mode-pills-row">
+            <button class="mode-pill sel-safe" id="modeSafe" onclick="setMode('safe')">
+              <span class="mode-pill-icon">🛡️</span>
+              <span class="mode-pill-label">Cauteloso</span>
+            </button>
+            <button class="mode-pill" id="modePremium" onclick="setMode('premium')">
+              <span class="mode-pill-icon">🌿</span>
+              <span class="mode-pill-label">Premium</span>
+            </button>
+            <button class="mode-pill" id="modeMax" onclick="setMode('max')">
+              <span class="mode-pill-icon">⚡</span>
+              <span class="mode-pill-label">Máximo</span>
+            </button>
+          </div>
+          <!-- Descripción del modo seleccionado -->
+          <div class="mode-desc-bar" id="modeDescBar">
+            <div class="mode-desc-dot" id="modeDescDot" style="background:var(--brand-primary);"></div>
+            <span id="modeDescText">Captura bloques seguros con buen precio por hora. Menos riesgo, ganancias estables.</span>
+          </div>
         </div>
       </div>
 
@@ -616,7 +592,7 @@
 
     // ONBOARDING
     let currentStep = 0;
-    // En producción usar: if (!localStorage.getItem('r4d_onboarded')) { ... }
+    
     function nextStep() {
       const steps = document.querySelectorAll('.onboarding-step');
       const dots  = document.querySelectorAll('.step-dot');
@@ -628,7 +604,7 @@
     }
     function closeOnboarding() {
       document.getElementById('onboardingOverlay').classList.remove('open');
-      // En producción: localStorage.setItem('r4d_onboarded', '1');
+      
     }
 
     function toggleSearch() {
@@ -655,13 +631,19 @@
         subTxt.textContent = '';
       }
     }
+    const modeData = {
+      safe:    { cls: 'sel-safe',    dot: 'var(--brand-primary)', desc: 'Captura bloques seguros con buen precio por hora. Menos riesgo, ganancias estables.' },
+      premium: { cls: 'sel-premium', dot: '#8B5CF6',              desc: 'Solo Fresh y Whole Foods. Bloques mejor pagados, clientes de alto valor.' },
+      max:     { cls: 'sel-max',     dot: 'var(--brand-accent)',  desc: 'Captura todo, máxima velocidad. Sin filtros — ideal para horas pico.' },
+    };
     function setMode(m) {
-      document.getElementById('modeSafe').className    = 'mode-card';
-      document.getElementById('modePremium').className = 'mode-card';
-      document.getElementById('modeMax').className     = 'mode-card';
-      if (m === 'safe')    document.getElementById('modeSafe').className    = 'mode-card active-safe';
-      if (m === 'premium') document.getElementById('modePremium').className = 'mode-card active-premium';
-      if (m === 'max')     document.getElementById('modeMax').className     = 'mode-card active-max';
+      document.getElementById('modeSafe').className    = 'mode-pill';
+      document.getElementById('modePremium').className = 'mode-pill';
+      document.getElementById('modeMax').className     = 'mode-pill';
+      const id = m === 'safe' ? 'modeSafe' : m === 'premium' ? 'modePremium' : 'modeMax';
+      document.getElementById(id).className = 'mode-pill ' + modeData[m].cls;
+      document.getElementById('modeDescText').textContent = modeData[m].desc;
+      document.getElementById('modeDescDot').style.background = modeData[m].dot;
     }
     function setTab(el, tab) {
       document.querySelectorAll('.earnings-tab').forEach(t => t.classList.remove('active'));

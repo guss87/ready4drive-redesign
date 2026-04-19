@@ -325,38 +325,6 @@
           <span class="config-summary-edit">Config activa</span>
         </div>
 
-        <!-- SECCIÓN MODO DE BÚSQUEDA -->
-        <div class="mode-section-card">
-          <div class="mode-section-title">Modo de búsqueda</div>
-
-          <div class="mode-row sel-safe" id="sModeSafe" onclick="setSettingsMode('safe')">
-            <span class="mode-row-icon">🛡️</span>
-            <div class="mode-row-info">
-              <div class="mode-row-name" style="color:var(--brand-primary);">Cauteloso</div>
-              <div class="mode-row-desc">Precio mínimo estricto, menos riesgo</div>
-            </div>
-            <div class="mode-row-radio"><div class="dot"></div></div>
-          </div>
-
-          <div class="mode-row" id="sModePremium" onclick="setSettingsMode('premium')">
-            <span class="mode-row-icon">🌿</span>
-            <div class="mode-row-info">
-              <div class="mode-row-name" style="color:#8B5CF6;">Premium</div>
-              <div class="mode-row-desc">Solo Fresh y Whole Foods — mejor pago</div>
-            </div>
-            <div class="mode-row-radio"><div class="dot"></div></div>
-          </div>
-
-          <div class="mode-row" id="sModeMax" onclick="setSettingsMode('max')">
-            <span class="mode-row-icon">⚡</span>
-            <div class="mode-row-info">
-              <div class="mode-row-name" style="color:var(--brand-accent);">Máximo</div>
-              <div class="mode-row-desc">Captura todo, máxima velocidad</div>
-            </div>
-            <div class="mode-row-radio"><div class="dot"></div></div>
-          </div>
-        </div>
-
         <span class="section-title">Horario semanal</span>
         <span class="section-action">Toca un día</span>
       </div>
@@ -623,22 +591,6 @@
   </div>
 
   <script>
-
-    function setSettingsMode(m) {
-      ['sModeSafe','sModePremium','sModeMax'].forEach(id => {
-        document.getElementById(id).className = 'mode-row';
-      });
-      const names = { safe: 'Cauteloso', premium: 'Premium', max: 'Máximo' };
-      if (m === 'safe')    document.getElementById('sModeSafe').className    = 'mode-row sel-safe';
-      if (m === 'premium') document.getElementById('sModePremium').className = 'mode-row sel-premium';
-      if (m === 'max')     document.getElementById('sModeMax').className     = 'mode-row sel-max';
-      // Actualizar resumen
-      const warehouseCount = document.querySelectorAll('.warehouse-item').length;
-      document.getElementById('configSummaryText').textContent =
-        'Modo ' + names[m] + ' · ' + warehouseCount + ' almacenes · Lun–Vie';
-    }
-
-
     // ===== WAREHOUSE EDIT MODAL =====
     function handleWarehouseClick(el) {
       // Ignorar si click fue en el botón de eliminar
