@@ -853,25 +853,9 @@
     });
 
     // ===== STREAK =====
+    // Valor demo para preview; en producción se persiste en el backend
     (function initStreak() {
-      const today = new Date().toDateString();
-      const lastActive = localStorage.getItem('r4d_last_active');
-      let streak = parseInt(localStorage.getItem('r4d_streak') || '0');
-
-      if (lastActive === today) {
-        // mismo día, no cambia
-      } else {
-        const yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
-        if (lastActive === yesterday.toDateString()) {
-          streak += 1; // racha continua
-        } else {
-          streak = 1; // reset
-        }
-        localStorage.setItem('r4d_streak', streak);
-        localStorage.setItem('r4d_last_active', today);
-      }
-
+      const streak = 7; // demo: 7 días activo
       if (streak >= 2) {
         const badge = document.getElementById('streakBadge');
         const count = document.getElementById('streakCount');

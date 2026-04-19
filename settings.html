@@ -848,9 +848,8 @@
     }
 
     // ===== ONBOARDING TOOLTIP (primera visita) =====
+    // En producción se controla desde el backend; en preview siempre visible
     (function initSettingsTip() {
-      if (localStorage.getItem('r4d_settings_seen')) return;
-      localStorage.setItem('r4d_settings_seen', '1');
 
       const tips = [
         { icon: '📅', text: 'Activa los días que quieres trabajar tocando cada día.' },
