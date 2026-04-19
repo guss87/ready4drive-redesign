@@ -116,6 +116,41 @@
       text-transform: uppercase;
     }
 
+
+    /* COPY LINK */
+    .copy-link-row {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--bg-surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      margin-top: 10px;
+    }
+    .copy-link-url {
+      flex: 1; font-size: 12px; color: var(--text-muted);
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .copy-link-btn {
+      background: var(--brand-primary); color: #fff;
+      font-size: 12px; font-weight: 700;
+      padding: 7px 14px; border-radius: var(--radius-sm);
+      border: none; cursor: pointer; font-family: inherit;
+      flex-shrink: 0; display: flex; align-items: center; gap: 5px;
+      transition: var(--transition);
+    }
+    .copy-link-btn.copied {
+      background: #00A868;
+    }
+    .copy-toast {
+      position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%);
+      background: var(--bg-card); border: 1px solid rgba(0,194,124,0.3);
+      color: var(--brand-primary); font-size: 13px; font-weight: 700;
+      padding: 10px 20px; border-radius: var(--radius-full);
+      white-space: nowrap; z-index: 300; opacity: 0; transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    .copy-toast.show { opacity: 1; }
+
   </style>
 </head>
 <body>
