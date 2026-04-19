@@ -139,7 +139,7 @@
       </div>
     </header>
 
-    <div class="page-content">
+    <div class="page-content" id="payFormSection">
 
       <h1 class="page-title">Planes de pago</h1>
       <p class="page-sub">Elige el plan que mejor se adapte a ti.</p>
@@ -225,7 +225,7 @@
         </div>
       </div>
 
-      <button class="btn btn-primary" style="font-size:16px; padding:16px;" id="payBtn">
+      <button class="btn btn-primary" style="font-size:16px; padding:16px;" id="payBtn" onclick="showPaySuccess()">
         🔒 Pagar $48.17 — 7 días
       </button>
 
@@ -295,7 +295,100 @@
       check.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>`;
       el.appendChild(check);
       document.getElementById('payBtn').textContent = `🔒 Pagar $${price} — ${days} días`;
+      // guardar plan seleccionado para la pantalla de éxito
+      window._selectedPlan = { days, price };
+    }
+
+    // ===== SUCCESS SCREEN =====
+    function showPaySuccess() {
+      const plan = window._selectedPlan || { days: 7, price: 48.17 };
+
+      // Lanzar confetti ligero
+      launchConfetti();
+
+      // Ocultar el form y mostrar éxito
+      document.getElementById('payFormSection').style.display = 'none';
+      const sc = document.getElementById('successScreen');
+      sc.style.display = 'flex';
+      sc.querySelector('#successDays').textContent = plan.days;
+      sc.querySelector('#successPrice').textContent = plan.price;
+      // Calcular fecha fin
+      const end = new Date();
+      end.setDate(end.getDate() + plan.days);
+      sc.querySelector('#successDate').textContent = end.toLocaleDateString('es-US', { month: 'long', day: 'numeric' });
+    }
+
+    function launchConfetti() {
+      const canvas = document.getElementById('confettiCanvas');
+      canvas.style.display = 'block';
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      const pieces = Array.from({length: 60}, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * -canvas.height,
+        r: Math.random() * 7 + 3,
+        d: Math.random() * 2 + 1,
+        color: ['#00C27C','#FF6B2B','#0066FF','#FFD700','#ffffff'][Math.floor(Math.random()*5)],
+        tilt: Math.random() * 10 - 5,
+        tiltSpeed: Math.random() * 0.1 + 0.05
+      }));
+      let frame = 0;
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        pieces.forEach(p => {
+          ctx.beginPath();
+          ctx.fillStyle = p.color;
+          ctx.ellipse(p.x, p.y, p.r, p.r * 0.5, p.tilt, 0, Math.PI * 2);
+          ctx.fill();
+          p.y += p.d * 3;
+          p.tilt += p.tiltSpeed;
+          if (p.y > canvas.height) { p.y = -10; p.x = Math.random() * canvas.width; }
+        });
+        frame++;
+        if (frame < 120) requestAnimationFrame(draw);
+        else { ctx.clearRect(0, 0, canvas.width, canvas.height); canvas.style.display = 'none'; }
+      }
+      draw();
     }
   </script>
+
+  <!-- CONFETTI CANVAS -->
+  <canvas id="confettiCanvas" style="position:fixed; inset:0; pointer-events:none; z-index:9999; display:none;"></canvas>
+
+  <!-- SUCCESS SCREEN -->
+  <div id="successScreen" style="
+    display:none; position:fixed; inset:0; background:var(--bg-base);
+    flex-direction:column; align-items:center; justify-content:center;
+    padding:32px 24px; z-index:9990; text-align:center;
+  ">
+    <div style="font-size:64px; margin-bottom:16px; animation: bounceIn 0.6s cubic-bezier(0.34,1.56,0.64,1)">🎉</div>
+    <div style="font-size:24px; font-weight:900; margin-bottom:8px;">¡Tu plan está activo!</div>
+    <div style="font-size:14px; color:var(--text-muted); margin-bottom:28px; line-height:1.6;">
+      Tienes <strong style="color:var(--brand-primary);"><span id="successDays">7</span> días</strong> de servicio activo.<br>
+      El robot ya está trabajando por ti.
+    </div>
+    <div style="background:var(--bg-card); border:1px solid var(--border-light); border-radius:var(--radius-lg); padding:20px; width:100%; max-width:320px; margin-bottom:28px;">
+      <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+        <span style="color:var(--text-muted); font-size:13px;">Plan pagado</span>
+        <span style="font-weight:800; color:var(--brand-primary);">$<span id="successPrice">48.17</span></span>
+      </div>
+      <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+        <span style="color:var(--text-muted); font-size:13px;">Vence el</span>
+        <span style="font-weight:700;"><span id="successDate">26 de abril</span></span>
+      </div>
+      <div style="display:flex; justify-content:space-between;">
+        <span style="color:var(--text-muted); font-size:13px;">Estado</span>
+        <span style="color:var(--brand-primary); font-weight:800">✅ Activo</span>
+      </div>
+    </div>
+    <a href="dashboard.html" style="
+      display:block; width:100%; max-width:320px; padding:15px;
+      background:var(--brand-primary); color:#000; font-weight:900; font-size:15px;
+      border-radius:var(--radius-md); text-decoration:none; margin-bottom:12px;
+    ">🤖 Ir al dashboard</a>
+    <p style="font-size:12px; color:var(--text-muted);">Recibirás confirmación por SMS</p>
+  </div>
+
 </body>
 </html>

@@ -386,6 +386,16 @@
     .history-panel.active { display: block; }
 
 
+    /* === STREAK BADGE === */
+    .streak-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: rgba(255,107,43,0.13); border: 1px solid rgba(255,107,43,0.28);
+      color: var(--brand-accent); border-radius: 20px;
+      font-size: 11px; font-weight: 800; padding: 3px 10px;
+      letter-spacing: 0.2px; margin-top: 5px;
+    }
+    .streak-badge.hidden { display: none; }
+
     /* === RENEWAL BANNER === */
     @keyframes pulse-banner {
       0%, 100% { opacity: 1; }
@@ -539,6 +549,7 @@
             <div>
               <div class="user-name">¡Hola, JesusC! 👋</div>
               <div class="user-greeting">Listo para capturar bloques hoy</div>
+              <div class="streak-badge hidden" id="streakBadge">🔥 <span id="streakCount">0</span> días activo</div>
             </div>
           </div>
           <a href="settings.html" class="settings-btn">
@@ -840,6 +851,34 @@
         setTimeout(() => showCaptureNotif(45, 'Maspeth', '2h'), 2500);
       }
     });
+
+    // ===== STREAK =====
+    (function initStreak() {
+      const today = new Date().toDateString();
+      const lastActive = localStorage.getItem('r4d_last_active');
+      let streak = parseInt(localStorage.getItem('r4d_streak') || '0');
+
+      if (lastActive === today) {
+        // mismo día, no cambia
+      } else {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        if (lastActive === yesterday.toDateString()) {
+          streak += 1; // racha continua
+        } else {
+          streak = 1; // reset
+        }
+        localStorage.setItem('r4d_streak', streak);
+        localStorage.setItem('r4d_last_active', today);
+      }
+
+      if (streak >= 2) {
+        const badge = document.getElementById('streakBadge');
+        const count = document.getElementById('streakCount');
+        count.textContent = streak;
+        badge.classList.remove('hidden');
+      }
+    })();
 
     // ===== HISTORY TABS =====
     function switchHistoryTab(el, panelId) {

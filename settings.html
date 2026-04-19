@@ -267,6 +267,64 @@
     .mode-row.sel-max     .mode-row-radio { border-color: var(--brand-accent); }
     .mode-row.sel-max     .mode-row-radio .dot { display: block; background: var(--brand-accent); }
 
+    /* === ONBOARDING TOOLTIP === */
+    .settings-tip {
+      position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%);
+      background: var(--brand-primary); color: #000;
+      padding: 12px 18px; border-radius: var(--radius-md);
+      font-size: 13px; font-weight: 700; width: calc(100% - 48px); max-width: 360px;
+      display: flex; align-items: center; gap: 10px;
+      box-shadow: 0 4px 24px rgba(0,194,124,0.3);
+      z-index: 9999; animation: tipSlide 0.4s cubic-bezier(0.34,1.56,0.64,1);
+      cursor: pointer;
+    }
+    .settings-tip.hiding {
+      animation: tipSlideOut 0.3s ease forwards;
+    }
+    @keyframes tipSlide {
+      from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+      to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+    @keyframes tipSlideOut {
+      from { opacity: 1; transform: translateX(-50%) translateY(0); }
+      to   { opacity: 0; transform: translateX(-50%) translateY(20px); }
+    }
+    .tip-icon { font-size: 20px; flex-shrink: 0; }
+    .tip-close { margin-left: auto; opacity: 0.7; flex-shrink: 0; }
+
+    /* === CONFIRM SAVE MODAL === */
+    .confirm-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+      z-index: 9998; display: flex; align-items: flex-end;
+      opacity: 0; pointer-events: none; transition: opacity 0.25s;
+    }
+    .confirm-overlay.open { opacity: 1; pointer-events: all; }
+    .confirm-sheet {
+      width: 100%; background: var(--bg-card); border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+      padding: 24px 20px 32px; transform: translateY(100%);
+      transition: transform 0.3s cubic-bezier(0.34,1.2,0.64,1);
+    }
+    .confirm-overlay.open .confirm-sheet { transform: translateY(0); }
+    .confirm-icon-wrap {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: rgba(0,194,124,0.12); display: flex;
+      align-items: center; justify-content: center;
+      margin: 0 auto 14px; font-size: 26px;
+    }
+    .confirm-title { text-align: center; font-size: 17px; font-weight: 800; margin-bottom: 6px; }
+    .confirm-sub   { text-align: center; font-size: 13px; color: var(--text-muted); margin-bottom: 22px; }
+    .confirm-actions { display: flex; flex-direction: column; gap: 10px; }
+    .confirm-btn-ok {
+      width: 100%; padding: 14px; background: var(--brand-primary); color: #000;
+      border: none; border-radius: var(--radius-md); font-size: 15px; font-weight: 800;
+      font-family: inherit; cursor: pointer;
+    }
+    .confirm-btn-cancel {
+      width: 100%; padding: 12px; background: transparent;
+      border: 1px solid var(--border-light); border-radius: var(--radius-md);
+      font-size: 14px; font-weight: 600; color: var(--text-muted);
+      font-family: inherit; cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -765,10 +823,76 @@
     function disableDay() { closeModal(); }
 
     function showSaved() {
-      const msg = document.getElementById('savedMsg');
-      msg.style.display = 'block';
-      setTimeout(() => msg.style.display = 'none', 3000);
+      // Ahora abre el modal de confirmación en vez del toast simple
+      openConfirmSave();
     }
+
+    // ===== CONFIRM SAVE MODAL =====
+    function openConfirmSave() {
+      document.getElementById('confirmSaveOverlay').classList.add('open');
+    }
+    function closeConfirmSave() {
+      const overlay = document.getElementById('confirmSaveOverlay');
+      overlay.classList.remove('open');
+    }
+    function confirmSaveAndClose() {
+      closeConfirmSave();
+      // Feedback visual rápido en el botón de guardar
+      const btns = document.querySelectorAll('.btn-primary');
+      btns.forEach(b => {
+        const orig = b.textContent;
+        b.textContent = '✅ Guardado';
+        b.style.background = 'rgba(0,194,124,0.4)';
+        setTimeout(() => { b.textContent = orig; b.style.background = ''; }, 1800);
+      });
+    }
+
+    // ===== ONBOARDING TOOLTIP (primera visita) =====
+    (function initSettingsTip() {
+      if (localStorage.getItem('r4d_settings_seen')) return;
+      localStorage.setItem('r4d_settings_seen', '1');
+
+      const tips = [
+        { icon: '📅', text: 'Activa los días que quieres trabajar tocando cada día.' },
+        { icon: '📍', text: 'Agrega tus almacenes favoritos para recibir bloques cercanos.' },
+      ];
+      let idx = 0;
+
+      function showTip() {
+        if (idx >= tips.length) return;
+        const tip = tips[idx];
+        const el = document.createElement('div');
+        el.className = 'settings-tip';
+        el.id = 'settingsTip';
+        el.innerHTML = `
+          <span class="tip-icon">${tip.icon}</span>
+          <span>${tip.text}</span>
+          <span class="tip-close">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </span>`;
+        el.onclick = () => {
+          el.classList.add('hiding');
+          setTimeout(() => { el.remove(); idx++; setTimeout(showTip, 500); }, 280);
+        };
+        document.body.appendChild(el);
+      }
+
+      setTimeout(showTip, 800);
+    })();
   </script>
+
+  <!-- CONFIRM SAVE SHEET -->
+  <div class="confirm-overlay" id="confirmSaveOverlay" onclick="if(event.target===this)closeConfirmSave()">
+    <div class="confirm-sheet">
+      <div class="confirm-icon-wrap">⚙️</div>
+      <div class="confirm-title">Guardar cambios</div>
+      <div class="confirm-sub">El sistema usará tu nueva configuración de inmediato. Los bloques activos no se verán afectados.</div>
+      <div class="confirm-actions">
+        <button class="confirm-btn-ok" onclick="confirmSaveAndClose()">✅ Sí, guardar ahora</button>
+        <button class="confirm-btn-cancel" onclick="closeConfirmSave()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
