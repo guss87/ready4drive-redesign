@@ -385,6 +385,49 @@
     .history-panel { display: none; padding-top: 4px; }
     .history-panel.active { display: block; }
 
+
+    /* === RENEWAL BANNER === */
+    @keyframes pulse-banner {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.85; }
+    }
+    .renewal-banner {
+      display: none;
+      background: linear-gradient(135deg, rgba(239,68,68,0.15), rgba(239,68,68,0.08));
+      border: 1.5px solid rgba(239,68,68,0.4);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      margin-bottom: var(--space-md);
+      animation: pulse-banner 2s infinite;
+    }
+    .renewal-banner.urgent-orange {
+      background: linear-gradient(135deg, rgba(255,107,43,0.14), rgba(255,107,43,0.06));
+      border-color: rgba(255,107,43,0.35);
+    }
+    .renewal-banner.show { display: block; }
+    .renewal-banner-top {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    }
+    .renewal-banner-icon { font-size: 22px; flex-shrink: 0; }
+    .renewal-banner-msg { flex: 1; }
+    .renewal-banner-title {
+      font-size: 14px; font-weight: 800; color: #EF4444; margin-bottom: 2px;
+    }
+    .renewal-banner-title.orange { color: var(--brand-accent); }
+    .renewal-banner-sub  { font-size: 12px; color: var(--text-secondary); line-height: 1.4; }
+    .renewal-banner-btn {
+      display: flex; align-items: center; justify-content: center; gap: 7px;
+      width: 100%; padding: 13px;
+      background: #EF4444; color: #fff;
+      font-size: 14px; font-weight: 800;
+      border-radius: var(--radius-md); border: none;
+      cursor: pointer; font-family: inherit;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    .renewal-banner-btn.orange { background: var(--brand-accent); }
+    .renewal-banner-btn:active { opacity: 0.9; transform: scale(0.98); }
+
   </style>
 </head>
 <body>
@@ -532,6 +575,21 @@
           <span class="invite-arrow">→</span>
         </div>
       </a>
+
+      <!-- RENEWAL BANNER (visible solo en estado crítico/urgente) -->
+      <div class="renewal-banner" id="renewalBanner">
+        <div class="renewal-banner-top">
+          <span class="renewal-banner-icon" id="renewalIcon">🔴</span>
+          <div class="renewal-banner-msg">
+            <div class="renewal-banner-title" id="renewalTitle">Tu plan vence hoy</div>
+            <div class="renewal-banner-sub"  id="renewalSub">El sistema se pausará automáticamente. Renueva ahora para no perder ningún bloque.</div>
+          </div>
+        </div>
+        <a href="payments.html" class="renewal-banner-btn" id="renewalBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>
+          Renovar plan ahora
+        </a>
+      </div>
 
       <!-- SEARCH TOGGLE -->
       <div class="search-toggle-card mb-md">
@@ -696,6 +754,7 @@
         badge.textContent = 'VENCIDO';
         sub.textContent  = 'Tu plan ha expirado — renueva ahora';
         btn.textContent  = '¡Renovar ya!';
+        showPlanBanner('critical', 0);
       } else if (daysLeft <= 1) {
         // Menos de 24 horas
         banner.className = 'service-banner critical';
@@ -704,6 +763,7 @@
         badge.textContent = 'Menos de 24h';
         sub.textContent  = '⚠️ Tu plan vence hoy — no pierdas cobertura';
         btn.style.background = '#EF4444';
+        showPlanBanner('critical', daysLeft);
       } else if (daysLeft <= 3) {
         // 2–3 días
         banner.className = 'service-banner urgent';
@@ -711,6 +771,7 @@
         badge.className  = 'plan-days-badge badge-urgent';
         badge.textContent = daysLeft + ' días';
         sub.textContent  = 'Tu plan vence pronto — renueva para no pausar';
+        showPlanBanner('urgent', daysLeft);
       } else {
         // Normal
         banner.className = 'service-banner';
@@ -718,8 +779,42 @@
         badge.className  = 'plan-days-badge badge-ok';
         badge.textContent = daysLeft + ' días';
         sub.textContent  = 'Tu plan está vigente';
+        hidePlanBanner();
       }
     }
+
+    function showPlanBanner(mode, daysLeft) {
+      const banner = document.getElementById('renewalBanner');
+      const title  = document.getElementById('renewalTitle');
+      const sub    = document.getElementById('renewalSub');
+      const btn    = document.getElementById('renewalBtn');
+      const icon   = document.getElementById('renewalIcon');
+
+      banner.classList.add('show');
+
+      if (mode === 'critical') {
+        banner.classList.remove('urgent-orange');
+        icon.textContent  = '🔴';
+        title.textContent = daysLeft <= 0 ? 'Tu plan ha expirado' : 'Tu plan vence hoy';
+        title.className   = 'renewal-banner-title';
+        sub.textContent   = 'El sistema se pausará automáticamente. Renueva ahora para no perder ningún bloque.';
+        btn.className     = 'renewal-banner-btn';
+        btn.innerHTML     = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg> ¡Renovar plan ahora!';
+      } else if (mode === 'urgent') {
+        banner.classList.add('urgent-orange');
+        icon.textContent  = '🟠';
+        title.textContent = 'Tu plan vence en ' + daysLeft + ' día' + (daysLeft > 1 ? 's' : '');
+        title.className   = 'renewal-banner-title orange';
+        sub.textContent   = 'Renueva antes de que se detenga la captura automática de bloques.';
+        btn.className     = 'renewal-banner-btn orange';
+        btn.innerHTML     = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg> Ver planes de renovación';
+      }
+    }
+
+    function hidePlanBanner() {
+      document.getElementById('renewalBanner').classList.remove('show');
+    }
+
     // Simular con 270 días (en producción viene del backend)
     updatePlanBadge(270);
 
