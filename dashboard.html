@@ -246,7 +246,7 @@
 
     /* WHATSAPP FLOAT */
     .wa-float {
-      position: fixed; bottom: 90px; right: 16px;
+      position: fixed; bottom: 94px; right: 16px;
       width: 48px; height: 48px; border-radius: 50%;
       background: #25D366;
       display: flex; align-items: center; justify-content: center;
@@ -385,6 +385,66 @@
     .history-panel { display: none; padding-top: 4px; }
     .history-panel.active { display: block; }
 
+
+
+    /* === WEEKLY SUMMARY === */
+    .weekly-summary {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 14px var(--space-md);
+      margin-bottom: var(--space-md);
+    }
+    .weekly-summary-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .weekly-summary-title { font-size: 13px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.6px; }
+    .weekly-summary-period { font-size: 11px; color: var(--text-muted); }
+    .weekly-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+    .weekly-stat { text-align: center; padding: 10px 6px; background: var(--bg-surface); border-radius: var(--radius-sm); }
+    .weekly-stat-val { font-size: 16px; font-weight: 900; color: var(--brand-primary); }
+    .weekly-stat-lbl { font-size: 10px; color: var(--text-muted); font-weight: 600; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.4px; }
+
+    /* === BOT TICKER === */
+    .bot-ticker {
+      display: none;
+      align-items: center; gap: 8px;
+      background: rgba(0,194,124,0.08); border: 1px solid rgba(0,194,124,0.2);
+      border-radius: var(--radius-sm); padding: 8px 12px;
+      margin-top: 8px; font-size: 12px; font-weight: 700;
+      color: var(--brand-primary);
+    }
+    .bot-ticker.visible { display: flex; }
+    .ticker-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--brand-primary);
+      animation: ticker-pulse 1s infinite;
+      flex-shrink: 0;
+    }
+    @keyframes ticker-pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: 0.4; transform: scale(0.8); }
+    }
+    .ticker-text { flex: 1; }
+    .ticker-count { color: var(--text-muted); font-weight: 600; margin-left: auto; }
+
+    /* === HISTORY ITEMS === */
+    .block-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 0; border-bottom: 1px solid var(--border);
+    }
+    .block-item:last-child { border-bottom: none; }
+    .block-icon {
+      width: 38px; height: 38px; border-radius: var(--radius-sm);
+      background: rgba(0,194,124,0.10);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; flex-shrink: 0;
+    }
+    .block-info { flex: 1; min-width: 0; }
+    .block-loc { font-size: 13px; font-weight: 700; }
+    .block-time { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+    .block-amount { font-size: 15px; font-weight: 900; color: var(--brand-primary); }
 
     /* === STREAK BADGE === */
     .streak-badge {
@@ -642,6 +702,13 @@
             <span id="modeDescText">Captura bloques seguros con buen precio por hora. Menos riesgo, ganancias estables.</span>
           </div>
         </div>
+
+          <!-- BOT TICKER (visible solo cuando ON) -->
+          <div class="bot-ticker" id="botTicker">
+            <div class="ticker-dot"></div>
+            <span class="ticker-text" id="tickerText">Escaneando bloques disponibles...</span>
+            <span class="ticker-count" id="tickerCount">última rev. hace 0s</span>
+          </div>
       </div>
 
       <!-- EARNINGS -->
@@ -660,6 +727,29 @@
             <div class="earnings-icon" style="background: rgba(0,102,255,0.10); font-size:20px;">⏱️</div>
             <span class="earnings-label">Horas trabajadas</span>
             <span class="earnings-value" style="color: var(--brand-blue);">0h</span>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- RESUMEN SEMANAL -->
+      <div class="weekly-summary mb-md">
+        <div class="weekly-summary-header">
+          <span class="weekly-summary-title">Esta semana</span>
+          <span class="weekly-summary-period">Lun 14 — Dom 20 Abr</span>
+        </div>
+        <div class="weekly-stats">
+          <div class="weekly-stat">
+            <div class="weekly-stat-val">$185</div>
+            <div class="weekly-stat-lbl">Ganado</div>
+          </div>
+          <div class="weekly-stat">
+            <div class="weekly-stat-val">3</div>
+            <div class="weekly-stat-lbl">Bloques</div>
+          </div>
+          <div class="weekly-stat">
+            <div class="weekly-stat-val">6.2h</div>
+            <div class="weekly-stat-lbl">Trabajado</div>
           </div>
         </div>
       </div>
@@ -683,11 +773,30 @@
       <div class="section-header">
         <span class="section-title">Bloques capturados</span>
       </div>
-      <div class="card mb-md">
-        <div class="offers-empty">
-          <div class="offers-empty-icon">📦</div>
-          <div class="offers-empty-title">Sin bloques capturados aún</div>
-          <p class="offers-empty-sub">Activa el sistema con el toggle de arriba para empezar a capturar bloques automáticamente.</p>
+      <div class="card mb-md" style="padding: 0 var(--space-md);">
+        <div class="block-item">
+          <div class="block-icon">📦</div>
+          <div class="block-info">
+            <div class="block-loc">Maspeth (DBK4)</div>
+            <div class="block-time">Dom 20 · 10:00am–12:00pm · 2h</div>
+          </div>
+          <div class="block-amount">$45</div>
+        </div>
+        <div class="block-item">
+          <div class="block-icon">🥦</div>
+          <div class="block-info">
+            <div class="block-loc">Brooklyn Fort Greene</div>
+            <div class="block-time">Sáb 19 · 8:00am–10:30am · 2.5h</div>
+          </div>
+          <div class="block-amount">$72</div>
+        </div>
+        <div class="block-item">
+          <div class="block-icon">📦</div>
+          <div class="block-info">
+            <div class="block-loc">Woodside (DBK1)</div>
+            <div class="block-time">Mar 15 · 2:00pm–4:00pm · 2h</div>
+          </div>
+          <div class="block-amount">$68</div>
         </div>
       </div>
 
@@ -700,18 +809,40 @@
           <div class="history-tab active" onclick="switchHistoryTab(this, 'tab-descartados')">🚫 Descartados</div>
           <div class="history-tab" onclick="switchHistoryTab(this, 'tab-perdidos')">💨 Perdidos</div>
         </div>
-        <div id="tab-descartados" class="history-panel active">
-          <div class="offers-empty">
-            <div class="offers-empty-icon">🚫</div>
-            <div class="offers-empty-title">Sin bloques descartados</div>
-            <p class="offers-empty-sub">Aquí aparecerán los bloques que no cumplieron tus filtros de monto o ubicación.</p>
+        <div id="tab-descartados" class="history-panel active" style="padding: 0 4px;">
+          <div class="block-item">
+            <div class="block-icon" style="background:rgba(255,59,59,0.08);">🚫</div>
+            <div class="block-info">
+              <div class="block-loc">Staten Island (DYY6)</div>
+              <div class="block-time">Dom 20 · Precio bajo — $28 (mín $40)</div>
+            </div>
+            <div class="block-amount" style="color:var(--text-muted);">$28</div>
+          </div>
+          <div class="block-item">
+            <div class="block-icon" style="background:rgba(255,59,59,0.08);">🚫</div>
+            <div class="block-info">
+              <div class="block-loc">Shirley (DAB8)</div>
+              <div class="block-time">Sáb 19 · Fuera de horario</div>
+            </div>
+            <div class="block-amount" style="color:var(--text-muted);">$55</div>
           </div>
         </div>
-        <div id="tab-perdidos" class="history-panel">
-          <div class="offers-empty">
-            <div class="offers-empty-icon">💨</div>
-            <div class="offers-empty-title">Sin bloques perdidos</div>
-            <p class="offers-empty-sub">Los bloques que alguien más capturó antes aparecerán aquí.</p>
+        <div id="tab-perdidos" class="history-panel" style="padding: 0 4px;">
+          <div class="block-item">
+            <div class="block-icon" style="background:rgba(255,184,0,0.08);">💨</div>
+            <div class="block-info">
+              <div class="block-loc">Queens / LI City (ZYO1)</div>
+              <div class="block-time">Dom 20 · 11:00am — capturado en 0.3s</div>
+            </div>
+            <div class="block-amount" style="color:var(--text-muted);">$80</div>
+          </div>
+          <div class="block-item">
+            <div class="block-icon" style="background:rgba(255,184,0,0.08);">💨</div>
+            <div class="block-info">
+              <div class="block-loc">Mineola (ZBK2)</div>
+              <div class="block-time">Vie 18 · 6:00pm — capturado en 1.1s</div>
+            </div>
+            <div class="block-amount" style="color:var(--text-muted);">$62</div>
           </div>
         </div>
       </div>
@@ -852,6 +983,40 @@
       }
     });
 
+
+    // ===== BOT TICKER =====
+    let _tickerInterval = null;
+    let _tickerSeconds = 0;
+
+    function startBotTicker() {
+      const ticker = document.getElementById('botTicker');
+      const tickerText = document.getElementById('tickerText');
+      const tickerCount = document.getElementById('tickerCount');
+      ticker.classList.add('visible');
+      _tickerSeconds = 0;
+      const msgs = [
+        'Escaneando bloques disponibles...',
+        'Revisando Maspeth y Brooklyn...',
+        'Verificando precios y horarios...',
+        'Monitoreando nuevas ofertas...',
+      ];
+      let msgIdx = 0;
+      _tickerInterval = setInterval(() => {
+        _tickerSeconds++;
+        tickerCount.textContent = `última rev. hace ${_tickerSeconds}s`;
+        if (_tickerSeconds % 4 === 0) {
+          msgIdx = (msgIdx + 1) % msgs.length;
+          tickerText.textContent = msgs[msgIdx];
+          _tickerSeconds = 0;
+        }
+      }, 1000);
+    }
+
+    function stopBotTicker() {
+      clearInterval(_tickerInterval);
+      document.getElementById('botTicker').classList.remove('visible');
+    }
+
     // ===== STREAK =====
     // Valor demo para preview; en producción se persiste en el backend
     (function initStreak() {
@@ -904,6 +1069,7 @@
       if (toggle.checked) {
         badge.textContent = 'ON'; badge.className = 'search-status-badge on';
         card.classList.add('system-on');
+        startBotTicker();
         bar.className = 'system-status-bar on';
         dot.className = 'status-dot on';
         mainTxt.textContent = '✓ Sistema activo — buscando bloques ahora';
@@ -911,6 +1077,7 @@
       } else {
         badge.textContent = 'OFF'; badge.className = 'search-status-badge off';
         card.classList.remove('system-on');
+        stopBotTicker();
         bar.className = 'system-status-bar off';
         dot.className = 'status-dot off';
         mainTxt.textContent = 'Sistema apagado — no está capturando bloques';
@@ -936,5 +1103,227 @@
       el.classList.add('active');
     }
   </script>
+
+  // ===== SELECTOR DE IDIOMA EN/ES =====
+  (function() {
+    const TRANS = {
+      es: {},  // vacío = textos originales en HTML
+      en: {
+        // COMMON
+        'Inicio': 'Home',
+        'Invitar': 'Invite',
+        'Filtros': 'Filters',
+        'Pagos': 'Payments',
+        'Perfil': 'Profile',
+        'Soporte': 'Support',
+        // TOPBAR
+        'Sistema': 'System',
+        'OFF': 'OFF',
+        'ON': 'ON',
+        // DASHBOARD
+        'Bot apagado': 'Bot off',
+        'Sistema detenido. Activa para capturar bloques automáticamente.': 'System stopped. Activate to capture blocks automatically.',
+        'Escaneando bloques disponibles...': 'Scanning available blocks...',
+        'Activo · buscando en Amazon Flex': 'Active · searching Amazon Flex',
+        'MODO DE BÚSQUEDA': 'SEARCH MODE',
+        'Cauteloso': 'Cautious',
+        'Solo bloques de bajo riesgo': 'Low-risk blocks only',
+        'Premium': 'Premium',
+        'Balance riesgo/ganancia': 'Risk/reward balance',
+        'Máximo': 'Maximum',
+        'Todos los bloques disponibles': 'All available blocks',
+        'RESUMEN DE SEMANA': 'WEEKLY SUMMARY',
+        'Esta semana': 'This week',
+        'Bloques': 'Blocks',
+        'Horas': 'Hours',
+        'ÚLTIMOS BLOQUES CAPTURADOS': 'LAST CAPTURED BLOCKS',
+        'DESCARTADOS': 'DISCARDED',
+        'PERDIDOS': 'MISSED',
+        'hace': 'ago',
+        'días': 'days',
+        'horas': 'hours',
+        'min': 'min',
+        'Ver más': 'See more',
+        'Plan activo:': 'Active plan:',
+        'Renovar plan': 'Renew plan',
+        'días restantes': 'days remaining',
+        'Soporte WhatsApp': 'WhatsApp Support',
+        'Racha': 'Streak',
+        'días activo': 'days active',
+        '¡Tu bot lleva': 'Your bot has been',
+        'días seguidos activo!': 'consecutive days active!',
+        '🔥': '🔥',
+        // HISTORIAL
+        'Capturados': 'Captured',
+        'Otros registros': 'Other records',
+        'precio bajo': 'low price',
+        'fuera de horario': 'out of schedule',
+        'capturado': 'captured',
+        'demasiado rápido': 'too fast',
+        'sin app abierta': 'app not open',
+        // SETTINGS
+        'Configuración': 'Settings',
+        'Horario de búsqueda': 'Search schedule',
+        'Almacenes activos': 'Active warehouses',
+        'Agregar almacén': 'Add warehouse',
+        'Guardar cambios': 'Save changes',
+        'Activado': 'Enabled',
+        'Desactivado': 'Disabled',
+        'Buscar almacén...': 'Search warehouse...',
+        'Selecciona el almacén donde deseas trabajar': 'Select the warehouse where you want to work',
+        'Seleccionar todo': 'Select all',
+        // PAYMENTS
+        'Planes': 'Plans',
+        'Calculadora ROI': 'ROI Calculator',
+        'días': 'days',
+        'Más popular': 'Most popular',
+        'Mejor valor': 'Best value',
+        'Activar plan': 'Activate plan',
+        'Bloques por día': 'Blocks per day',
+        'Valor por bloque': 'Value per block',
+        'Días activo': 'Active days',
+        'Ganancia estimada': 'Estimated earnings',
+        'Si capturas': 'If you capture',
+        // PROFILE
+        'Mi perfil': 'My profile',
+        'Mis ganancias con Ready4Drive': 'My Ready4Drive earnings',
+        'Total ganado histórico': 'Total historical earnings',
+        'Activo desde': 'Active since',
+        'Racha máx.': 'Max streak',
+        'Editar perfil': 'Edit profile',
+        'Cambiar contraseña': 'Change password',
+        'Notificaciones': 'Notifications',
+        'Idioma': 'Language',
+        'Cerrar sesión': 'Log out',
+        'Configuración de cuenta': 'Account settings',
+        // INVITATIONS
+        'Invitar amigos': 'Invite friends',
+        'Referidos': 'Referrals',
+        'Copiar link': 'Copy link',
+        'Compartir por WhatsApp': 'Share on WhatsApp',
+        'Pendiente': 'Pending',
+        'Activo': 'Active',
+        'Recordar por WhatsApp': 'Remind via WhatsApp',
+        'Recordar por SMS': 'Remind via SMS',
+        'Tus referidos': 'Your referrals',
+        'Cómo funciona': 'How it works',
+      }
+    };
+
+    let currentLang = localStorage.getItem('r4d_lang') || 'es';
+
+    function applyLang(lang) {
+      currentLang = lang;
+      try { localStorage.setItem('r4d_lang', lang); } catch(e) {}
+
+      // Update button label
+      document.querySelectorAll('.topbar-lang').forEach(btn => {
+        btn.textContent = lang === 'es' ? '🌐 ES' : '🌐 EN';
+        btn.setAttribute('data-lang', lang);
+      });
+
+      if (lang === 'en') {
+        translateDOM(document.body, TRANS.en);
+      } else {
+        // Reload page to restore original Spanish (simplest approach)
+        // But since we can't reload, we store originals and restore
+        restoreOriginals(document.body);
+      }
+    }
+
+    // Store original text nodes before any translation
+    const originals = new WeakMap();
+
+    function storeOriginal(node) {
+      if (!originals.has(node)) {
+        originals.set(node, node.textContent);
+      }
+    }
+
+    function translateDOM(root, dict) {
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+        acceptNode(node) {
+          const parent = node.parentElement;
+          if (!parent) return NodeFilter.FILTER_REJECT;
+          const tag = parent.tagName;
+          // Skip script, style, svg text
+          if (['SCRIPT','STYLE','SVG'].includes(tag)) return NodeFilter.FILTER_REJECT;
+          if (parent.closest('svg')) return NodeFilter.FILTER_REJECT;
+          const txt = node.textContent.trim();
+          if (!txt) return NodeFilter.FILTER_SKIP;
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      });
+      const nodes = [];
+      while (walker.nextNode()) nodes.push(walker.currentNode);
+
+      nodes.forEach(node => {
+        storeOriginal(node);
+        let txt = node.textContent;
+        // Try full match first
+        if (dict[txt.trim()]) {
+          node.textContent = txt.replace(txt.trim(), dict[txt.trim()]);
+          return;
+        }
+        // Try partial replacements
+        let newTxt = txt;
+        Object.entries(dict).forEach(([es, en]) => {
+          if (newTxt.includes(es)) {
+            newTxt = newTxt.split(es).join(en);
+          }
+        });
+        if (newTxt !== txt) node.textContent = newTxt;
+      });
+
+      // Also translate placeholders
+      root.querySelectorAll('[placeholder]').forEach(el => {
+        storeOriginal(el);
+        const ph = el.getAttribute('placeholder');
+        if (dict[ph]) el.setAttribute('placeholder', dict[ph]);
+      });
+    }
+
+    function restoreOriginals(root) {
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+        acceptNode(node) {
+          if (!node.parentElement) return NodeFilter.FILTER_REJECT;
+          if (node.parentElement.closest('svg')) return NodeFilter.FILTER_REJECT;
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      });
+      const nodes = [];
+      while (walker.nextNode()) nodes.push(walker.currentNode);
+      nodes.forEach(node => {
+        if (originals.has(node)) node.textContent = originals.get(node);
+      });
+      // Restore placeholders
+      root.querySelectorAll('[placeholder]').forEach(el => {
+        if (originals.has(el)) el.setAttribute('placeholder', originals.get(el));
+      });
+    }
+
+    // Bind button
+    function bindLangBtn() {
+      document.querySelectorAll('.topbar-lang').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const newLang = currentLang === 'es' ? 'en' : 'es';
+          applyLang(newLang);
+        });
+      });
+      // Apply stored preference on load
+      if (currentLang === 'en') {
+        // Small delay so DOM is ready
+        setTimeout(() => applyLang('en'), 100);
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', bindLangBtn);
+    } else {
+      bindLangBtn();
+    }
+  })();
+  // ===== FIN SELECTOR DE IDIOMA =====
+
 </body>
 </html>

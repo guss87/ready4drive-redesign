@@ -72,6 +72,21 @@
     .menu-label { font-size: 15px; font-weight: 600; flex: 1; }
     .menu-arrow { color: var(--text-muted); }
 
+
+    /* EARNINGS HISTORY CARD */
+    .earnings-hist {
+      background: linear-gradient(135deg, rgba(0,194,124,0.10), rgba(0,194,124,0.04));
+      border: 1px solid rgba(0,194,124,0.2);
+      border-radius: var(--radius-lg); padding: var(--space-md);
+      margin-bottom: var(--space-md);
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .earn-hist-full { grid-column: span 2; border-bottom: 1px solid rgba(0,194,124,0.15); padding-bottom: 12px; margin-bottom: 4px; }
+    .earn-hist-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+    .earn-hist-val { font-size: 22px; font-weight: 900; color: var(--brand-primary); }
+    .earn-hist-val-sm { font-size: 17px; font-weight: 800; color: var(--text-primary); }
+
     .logout-btn {
       width: 100%; padding: 15px; border-radius: var(--radius-md);
       background: rgba(255,59,59,0.08); border: 1px solid rgba(255,59,59,0.2);
@@ -156,6 +171,34 @@
         </div>
       </div>
 
+
+      <!-- EARNINGS HISTORY -->
+      <div class="section-header" style="margin-top:4px;">
+        <span class="section-title">Mis ganancias con Ready4Drive</span>
+      </div>
+      <div class="earnings-hist mb-md">
+        <div class="earn-hist-full">
+          <div class="earn-hist-label">💰 Total ganado histórico</div>
+          <div class="earn-hist-val">$2,340</div>
+        </div>
+        <div>
+          <div class="earn-hist-label">📦 Bloques</div>
+          <div class="earn-hist-val-sm">47</div>
+        </div>
+        <div>
+          <div class="earn-hist-label">⏱️ Horas</div>
+          <div class="earn-hist-val-sm">94h</div>
+        </div>
+        <div>
+          <div class="earn-hist-label">📅 Activo desde</div>
+          <div class="earn-hist-val-sm">Jul 2025</div>
+        </div>
+        <div>
+          <div class="earn-hist-label">⭐ Racha máx.</div>
+          <div class="earn-hist-val-sm">21 días</div>
+        </div>
+      </div>
+
       <!-- MENU -->
       <div class="section-title mb-md">Configuración</div>
       <div class="card mb-md">
@@ -227,5 +270,227 @@
       </a>
     </nav>
   </div>
+
+  // ===== SELECTOR DE IDIOMA EN/ES =====
+  (function() {
+    const TRANS = {
+      es: {},  // vacío = textos originales en HTML
+      en: {
+        // COMMON
+        'Inicio': 'Home',
+        'Invitar': 'Invite',
+        'Filtros': 'Filters',
+        'Pagos': 'Payments',
+        'Perfil': 'Profile',
+        'Soporte': 'Support',
+        // TOPBAR
+        'Sistema': 'System',
+        'OFF': 'OFF',
+        'ON': 'ON',
+        // DASHBOARD
+        'Bot apagado': 'Bot off',
+        'Sistema detenido. Activa para capturar bloques automáticamente.': 'System stopped. Activate to capture blocks automatically.',
+        'Escaneando bloques disponibles...': 'Scanning available blocks...',
+        'Activo · buscando en Amazon Flex': 'Active · searching Amazon Flex',
+        'MODO DE BÚSQUEDA': 'SEARCH MODE',
+        'Cauteloso': 'Cautious',
+        'Solo bloques de bajo riesgo': 'Low-risk blocks only',
+        'Premium': 'Premium',
+        'Balance riesgo/ganancia': 'Risk/reward balance',
+        'Máximo': 'Maximum',
+        'Todos los bloques disponibles': 'All available blocks',
+        'RESUMEN DE SEMANA': 'WEEKLY SUMMARY',
+        'Esta semana': 'This week',
+        'Bloques': 'Blocks',
+        'Horas': 'Hours',
+        'ÚLTIMOS BLOQUES CAPTURADOS': 'LAST CAPTURED BLOCKS',
+        'DESCARTADOS': 'DISCARDED',
+        'PERDIDOS': 'MISSED',
+        'hace': 'ago',
+        'días': 'days',
+        'horas': 'hours',
+        'min': 'min',
+        'Ver más': 'See more',
+        'Plan activo:': 'Active plan:',
+        'Renovar plan': 'Renew plan',
+        'días restantes': 'days remaining',
+        'Soporte WhatsApp': 'WhatsApp Support',
+        'Racha': 'Streak',
+        'días activo': 'days active',
+        '¡Tu bot lleva': 'Your bot has been',
+        'días seguidos activo!': 'consecutive days active!',
+        '🔥': '🔥',
+        // HISTORIAL
+        'Capturados': 'Captured',
+        'Otros registros': 'Other records',
+        'precio bajo': 'low price',
+        'fuera de horario': 'out of schedule',
+        'capturado': 'captured',
+        'demasiado rápido': 'too fast',
+        'sin app abierta': 'app not open',
+        // SETTINGS
+        'Configuración': 'Settings',
+        'Horario de búsqueda': 'Search schedule',
+        'Almacenes activos': 'Active warehouses',
+        'Agregar almacén': 'Add warehouse',
+        'Guardar cambios': 'Save changes',
+        'Activado': 'Enabled',
+        'Desactivado': 'Disabled',
+        'Buscar almacén...': 'Search warehouse...',
+        'Selecciona el almacén donde deseas trabajar': 'Select the warehouse where you want to work',
+        'Seleccionar todo': 'Select all',
+        // PAYMENTS
+        'Planes': 'Plans',
+        'Calculadora ROI': 'ROI Calculator',
+        'días': 'days',
+        'Más popular': 'Most popular',
+        'Mejor valor': 'Best value',
+        'Activar plan': 'Activate plan',
+        'Bloques por día': 'Blocks per day',
+        'Valor por bloque': 'Value per block',
+        'Días activo': 'Active days',
+        'Ganancia estimada': 'Estimated earnings',
+        'Si capturas': 'If you capture',
+        // PROFILE
+        'Mi perfil': 'My profile',
+        'Mis ganancias con Ready4Drive': 'My Ready4Drive earnings',
+        'Total ganado histórico': 'Total historical earnings',
+        'Activo desde': 'Active since',
+        'Racha máx.': 'Max streak',
+        'Editar perfil': 'Edit profile',
+        'Cambiar contraseña': 'Change password',
+        'Notificaciones': 'Notifications',
+        'Idioma': 'Language',
+        'Cerrar sesión': 'Log out',
+        'Configuración de cuenta': 'Account settings',
+        // INVITATIONS
+        'Invitar amigos': 'Invite friends',
+        'Referidos': 'Referrals',
+        'Copiar link': 'Copy link',
+        'Compartir por WhatsApp': 'Share on WhatsApp',
+        'Pendiente': 'Pending',
+        'Activo': 'Active',
+        'Recordar por WhatsApp': 'Remind via WhatsApp',
+        'Recordar por SMS': 'Remind via SMS',
+        'Tus referidos': 'Your referrals',
+        'Cómo funciona': 'How it works',
+      }
+    };
+
+    let currentLang = localStorage.getItem('r4d_lang') || 'es';
+
+    function applyLang(lang) {
+      currentLang = lang;
+      try { localStorage.setItem('r4d_lang', lang); } catch(e) {}
+
+      // Update button label
+      document.querySelectorAll('.topbar-lang').forEach(btn => {
+        btn.textContent = lang === 'es' ? '🌐 ES' : '🌐 EN';
+        btn.setAttribute('data-lang', lang);
+      });
+
+      if (lang === 'en') {
+        translateDOM(document.body, TRANS.en);
+      } else {
+        // Reload page to restore original Spanish (simplest approach)
+        // But since we can't reload, we store originals and restore
+        restoreOriginals(document.body);
+      }
+    }
+
+    // Store original text nodes before any translation
+    const originals = new WeakMap();
+
+    function storeOriginal(node) {
+      if (!originals.has(node)) {
+        originals.set(node, node.textContent);
+      }
+    }
+
+    function translateDOM(root, dict) {
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+        acceptNode(node) {
+          const parent = node.parentElement;
+          if (!parent) return NodeFilter.FILTER_REJECT;
+          const tag = parent.tagName;
+          // Skip script, style, svg text
+          if (['SCRIPT','STYLE','SVG'].includes(tag)) return NodeFilter.FILTER_REJECT;
+          if (parent.closest('svg')) return NodeFilter.FILTER_REJECT;
+          const txt = node.textContent.trim();
+          if (!txt) return NodeFilter.FILTER_SKIP;
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      });
+      const nodes = [];
+      while (walker.nextNode()) nodes.push(walker.currentNode);
+
+      nodes.forEach(node => {
+        storeOriginal(node);
+        let txt = node.textContent;
+        // Try full match first
+        if (dict[txt.trim()]) {
+          node.textContent = txt.replace(txt.trim(), dict[txt.trim()]);
+          return;
+        }
+        // Try partial replacements
+        let newTxt = txt;
+        Object.entries(dict).forEach(([es, en]) => {
+          if (newTxt.includes(es)) {
+            newTxt = newTxt.split(es).join(en);
+          }
+        });
+        if (newTxt !== txt) node.textContent = newTxt;
+      });
+
+      // Also translate placeholders
+      root.querySelectorAll('[placeholder]').forEach(el => {
+        storeOriginal(el);
+        const ph = el.getAttribute('placeholder');
+        if (dict[ph]) el.setAttribute('placeholder', dict[ph]);
+      });
+    }
+
+    function restoreOriginals(root) {
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+        acceptNode(node) {
+          if (!node.parentElement) return NodeFilter.FILTER_REJECT;
+          if (node.parentElement.closest('svg')) return NodeFilter.FILTER_REJECT;
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      });
+      const nodes = [];
+      while (walker.nextNode()) nodes.push(walker.currentNode);
+      nodes.forEach(node => {
+        if (originals.has(node)) node.textContent = originals.get(node);
+      });
+      // Restore placeholders
+      root.querySelectorAll('[placeholder]').forEach(el => {
+        if (originals.has(el)) el.setAttribute('placeholder', originals.get(el));
+      });
+    }
+
+    // Bind button
+    function bindLangBtn() {
+      document.querySelectorAll('.topbar-lang').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const newLang = currentLang === 'es' ? 'en' : 'es';
+          applyLang(newLang);
+        });
+      });
+      // Apply stored preference on load
+      if (currentLang === 'en') {
+        // Small delay so DOM is ready
+        setTimeout(() => applyLang('en'), 100);
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', bindLangBtn);
+    } else {
+      bindLangBtn();
+    }
+  })();
+  // ===== FIN SELECTOR DE IDIOMA =====
+
 </body>
 </html>

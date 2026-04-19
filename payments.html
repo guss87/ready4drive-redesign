@@ -39,6 +39,10 @@
     }
     .plan-days { font-size: 32px; font-weight: 800; }
     .plan-days-label { font-size: 12px; color: var(--text-secondary); font-weight: 600; margin-bottom: 8px; }
+    .plan-price-orig {
+      font-size: 12px; color: var(--text-muted); text-decoration: line-through;
+      margin-bottom: 0; font-weight: 600;
+    }
     .plan-price { font-size: 22px; font-weight: 800; color: var(--brand-primary); }
     .plan-per-day { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
     .plan-check {
@@ -149,6 +153,7 @@
         <div class="plan-card" onclick="selectPlan(this, 3, 33.7)" id="plan3">
           <div class="plan-days">3</div>
           <div class="plan-days-label">días</div>
+          <div class="plan-price-orig">$39.60</div>
           <div class="plan-price">$33.7</div>
           <div class="plan-per-day">~$11.2/día</div>
         </div>
@@ -160,6 +165,7 @@
           </div>
           <div class="plan-days">7</div>
           <div class="plan-days-label">días</div>
+          <div class="plan-price-orig">$56.70</div>
           <div class="plan-price">$48.17</div>
           <div class="plan-per-day">~$6.9/día</div>
         </div>
@@ -167,6 +173,7 @@
         <div class="plan-card" onclick="selectPlan(this, 14, 87.14)" id="plan14">
           <div class="plan-days">14</div>
           <div class="plan-days-label">días</div>
+          <div class="plan-price-orig">$102.50</div>
           <div class="plan-price">$87.14</div>
           <div class="plan-per-day">~$6.2/día</div>
         </div>
@@ -175,6 +182,7 @@
           <div class="popular-badge" style="background: var(--brand-primary);">💰 Mejor valor</div>
           <div class="plan-days">30</div>
           <div class="plan-days-label">días</div>
+          <div class="plan-price-orig">$188.00</div>
           <div class="plan-price">$159.9</div>
           <div class="plan-per-day">~$5.3/día</div>
         </div>
@@ -389,6 +397,228 @@
     ">🤖 Ir al dashboard</a>
     <p style="font-size:12px; color:var(--text-muted);">Recibirás confirmación por SMS</p>
   </div>
+
+
+  // ===== SELECTOR DE IDIOMA EN/ES =====
+  (function() {
+    const TRANS = {
+      es: {},  // vacío = textos originales en HTML
+      en: {
+        // COMMON
+        'Inicio': 'Home',
+        'Invitar': 'Invite',
+        'Filtros': 'Filters',
+        'Pagos': 'Payments',
+        'Perfil': 'Profile',
+        'Soporte': 'Support',
+        // TOPBAR
+        'Sistema': 'System',
+        'OFF': 'OFF',
+        'ON': 'ON',
+        // DASHBOARD
+        'Bot apagado': 'Bot off',
+        'Sistema detenido. Activa para capturar bloques automáticamente.': 'System stopped. Activate to capture blocks automatically.',
+        'Escaneando bloques disponibles...': 'Scanning available blocks...',
+        'Activo · buscando en Amazon Flex': 'Active · searching Amazon Flex',
+        'MODO DE BÚSQUEDA': 'SEARCH MODE',
+        'Cauteloso': 'Cautious',
+        'Solo bloques de bajo riesgo': 'Low-risk blocks only',
+        'Premium': 'Premium',
+        'Balance riesgo/ganancia': 'Risk/reward balance',
+        'Máximo': 'Maximum',
+        'Todos los bloques disponibles': 'All available blocks',
+        'RESUMEN DE SEMANA': 'WEEKLY SUMMARY',
+        'Esta semana': 'This week',
+        'Bloques': 'Blocks',
+        'Horas': 'Hours',
+        'ÚLTIMOS BLOQUES CAPTURADOS': 'LAST CAPTURED BLOCKS',
+        'DESCARTADOS': 'DISCARDED',
+        'PERDIDOS': 'MISSED',
+        'hace': 'ago',
+        'días': 'days',
+        'horas': 'hours',
+        'min': 'min',
+        'Ver más': 'See more',
+        'Plan activo:': 'Active plan:',
+        'Renovar plan': 'Renew plan',
+        'días restantes': 'days remaining',
+        'Soporte WhatsApp': 'WhatsApp Support',
+        'Racha': 'Streak',
+        'días activo': 'days active',
+        '¡Tu bot lleva': 'Your bot has been',
+        'días seguidos activo!': 'consecutive days active!',
+        '🔥': '🔥',
+        // HISTORIAL
+        'Capturados': 'Captured',
+        'Otros registros': 'Other records',
+        'precio bajo': 'low price',
+        'fuera de horario': 'out of schedule',
+        'capturado': 'captured',
+        'demasiado rápido': 'too fast',
+        'sin app abierta': 'app not open',
+        // SETTINGS
+        'Configuración': 'Settings',
+        'Horario de búsqueda': 'Search schedule',
+        'Almacenes activos': 'Active warehouses',
+        'Agregar almacén': 'Add warehouse',
+        'Guardar cambios': 'Save changes',
+        'Activado': 'Enabled',
+        'Desactivado': 'Disabled',
+        'Buscar almacén...': 'Search warehouse...',
+        'Selecciona el almacén donde deseas trabajar': 'Select the warehouse where you want to work',
+        'Seleccionar todo': 'Select all',
+        // PAYMENTS
+        'Planes': 'Plans',
+        'Calculadora ROI': 'ROI Calculator',
+        'días': 'days',
+        'Más popular': 'Most popular',
+        'Mejor valor': 'Best value',
+        'Activar plan': 'Activate plan',
+        'Bloques por día': 'Blocks per day',
+        'Valor por bloque': 'Value per block',
+        'Días activo': 'Active days',
+        'Ganancia estimada': 'Estimated earnings',
+        'Si capturas': 'If you capture',
+        // PROFILE
+        'Mi perfil': 'My profile',
+        'Mis ganancias con Ready4Drive': 'My Ready4Drive earnings',
+        'Total ganado histórico': 'Total historical earnings',
+        'Activo desde': 'Active since',
+        'Racha máx.': 'Max streak',
+        'Editar perfil': 'Edit profile',
+        'Cambiar contraseña': 'Change password',
+        'Notificaciones': 'Notifications',
+        'Idioma': 'Language',
+        'Cerrar sesión': 'Log out',
+        'Configuración de cuenta': 'Account settings',
+        // INVITATIONS
+        'Invitar amigos': 'Invite friends',
+        'Referidos': 'Referrals',
+        'Copiar link': 'Copy link',
+        'Compartir por WhatsApp': 'Share on WhatsApp',
+        'Pendiente': 'Pending',
+        'Activo': 'Active',
+        'Recordar por WhatsApp': 'Remind via WhatsApp',
+        'Recordar por SMS': 'Remind via SMS',
+        'Tus referidos': 'Your referrals',
+        'Cómo funciona': 'How it works',
+      }
+    };
+
+    let currentLang = localStorage.getItem('r4d_lang') || 'es';
+
+    function applyLang(lang) {
+      currentLang = lang;
+      try { localStorage.setItem('r4d_lang', lang); } catch(e) {}
+
+      // Update button label
+      document.querySelectorAll('.topbar-lang').forEach(btn => {
+        btn.textContent = lang === 'es' ? '🌐 ES' : '🌐 EN';
+        btn.setAttribute('data-lang', lang);
+      });
+
+      if (lang === 'en') {
+        translateDOM(document.body, TRANS.en);
+      } else {
+        // Reload page to restore original Spanish (simplest approach)
+        // But since we can't reload, we store originals and restore
+        restoreOriginals(document.body);
+      }
+    }
+
+    // Store original text nodes before any translation
+    const originals = new WeakMap();
+
+    function storeOriginal(node) {
+      if (!originals.has(node)) {
+        originals.set(node, node.textContent);
+      }
+    }
+
+    function translateDOM(root, dict) {
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+        acceptNode(node) {
+          const parent = node.parentElement;
+          if (!parent) return NodeFilter.FILTER_REJECT;
+          const tag = parent.tagName;
+          // Skip script, style, svg text
+          if (['SCRIPT','STYLE','SVG'].includes(tag)) return NodeFilter.FILTER_REJECT;
+          if (parent.closest('svg')) return NodeFilter.FILTER_REJECT;
+          const txt = node.textContent.trim();
+          if (!txt) return NodeFilter.FILTER_SKIP;
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      });
+      const nodes = [];
+      while (walker.nextNode()) nodes.push(walker.currentNode);
+
+      nodes.forEach(node => {
+        storeOriginal(node);
+        let txt = node.textContent;
+        // Try full match first
+        if (dict[txt.trim()]) {
+          node.textContent = txt.replace(txt.trim(), dict[txt.trim()]);
+          return;
+        }
+        // Try partial replacements
+        let newTxt = txt;
+        Object.entries(dict).forEach(([es, en]) => {
+          if (newTxt.includes(es)) {
+            newTxt = newTxt.split(es).join(en);
+          }
+        });
+        if (newTxt !== txt) node.textContent = newTxt;
+      });
+
+      // Also translate placeholders
+      root.querySelectorAll('[placeholder]').forEach(el => {
+        storeOriginal(el);
+        const ph = el.getAttribute('placeholder');
+        if (dict[ph]) el.setAttribute('placeholder', dict[ph]);
+      });
+    }
+
+    function restoreOriginals(root) {
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+        acceptNode(node) {
+          if (!node.parentElement) return NodeFilter.FILTER_REJECT;
+          if (node.parentElement.closest('svg')) return NodeFilter.FILTER_REJECT;
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      });
+      const nodes = [];
+      while (walker.nextNode()) nodes.push(walker.currentNode);
+      nodes.forEach(node => {
+        if (originals.has(node)) node.textContent = originals.get(node);
+      });
+      // Restore placeholders
+      root.querySelectorAll('[placeholder]').forEach(el => {
+        if (originals.has(el)) el.setAttribute('placeholder', originals.get(el));
+      });
+    }
+
+    // Bind button
+    function bindLangBtn() {
+      document.querySelectorAll('.topbar-lang').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const newLang = currentLang === 'es' ? 'en' : 'es';
+          applyLang(newLang);
+        });
+      });
+      // Apply stored preference on load
+      if (currentLang === 'en') {
+        // Small delay so DOM is ready
+        setTimeout(() => applyLang('en'), 100);
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', bindLangBtn);
+    } else {
+      bindLangBtn();
+    }
+  })();
+  // ===== FIN SELECTOR DE IDIOMA =====
 
 </body>
 </html>
