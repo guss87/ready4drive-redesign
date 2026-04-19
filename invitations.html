@@ -68,6 +68,54 @@
     .ref-info { flex: 1; }
     .ref-phone { font-size: 14px; font-weight: 600; }
     .ref-time { font-size: 12px; color: var(--text-muted); }
+
+    /* REMINDER BUTTON */
+    .ref-item { position: relative; }
+    .ref-reminder {
+      display: flex; gap: 8px; margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+    }
+    .btn-remind {
+      flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 9px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 12px; font-weight: 700;
+      cursor: pointer; font-family: inherit;
+      transition: var(--transition); border: none;
+    }
+    .btn-remind-wa {
+      background: rgba(37,211,102,0.12);
+      color: #25D366;
+      border: 1px solid rgba(37,211,102,0.25);
+    }
+    .btn-remind-wa:active { background: rgba(37,211,102,0.22); }
+    .btn-remind-sms {
+      background: rgba(0,102,255,0.10);
+      color: var(--brand-blue);
+      border: 1px solid rgba(0,102,255,0.2);
+    }
+    .btn-remind-sms:active { background: rgba(0,102,255,0.20); }
+    /* Toast de confirmación */
+    .remind-toast {
+      position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%);
+      background: var(--bg-card); border: 1px solid rgba(0,194,124,0.3);
+      color: var(--brand-primary); font-size: 13px; font-weight: 700;
+      padding: 10px 20px; border-radius: var(--radius-full);
+      white-space: nowrap; z-index: 300;
+      opacity: 0; transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    .remind-toast.show { opacity: 1; }
+    /* Badge sent */
+    .badge-sent {
+      background: rgba(0,194,124,0.12);
+      color: var(--brand-primary);
+      font-size: 10px; font-weight: 800;
+      padding: 2px 8px; border-radius: var(--radius-full);
+      text-transform: uppercase;
+    }
+
   </style>
 </head>
 <body>
