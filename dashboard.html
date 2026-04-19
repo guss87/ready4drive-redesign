@@ -668,10 +668,10 @@
         </div>
       </a>
 
+      <!-- HISTORIAL: Capturados -->
       <div class="section-header">
         <span class="section-title">Bloques capturados</span>
       </div>
-
       <div class="card mb-md">
         <div class="offers-empty">
           <div class="offers-empty-icon">📦</div>
@@ -680,25 +680,28 @@
         </div>
       </div>
 
+      <!-- HISTORIAL: Otros registros (tabs Descartados / Perdidos) -->
       <div class="section-header">
-        <span class="section-title">Bloques descartados</span>
+        <span class="section-title">Otros registros</span>
       </div>
       <div class="card mb-md">
-        <div class="offers-empty">
-          <div class="offers-empty-icon">🚫</div>
-          <div class="offers-empty-title">Sin bloques descartados</div>
-          <p class="offers-empty-sub">Aquí aparecerán los bloques que no cumplieron tus filtros de monto o ubicación.</p>
+        <div class="history-tabs">
+          <div class="history-tab active" onclick="switchHistoryTab(this, 'tab-descartados')">🚫 Descartados</div>
+          <div class="history-tab" onclick="switchHistoryTab(this, 'tab-perdidos')">💨 Perdidos</div>
         </div>
-      </div>
-
-      <div class="section-header">
-        <span class="section-title">Bloques perdidos</span>
-      </div>
-      <div class="card">
-        <div class="offers-empty">
-          <div class="offers-empty-icon">💨</div>
-          <div class="offers-empty-title">Sin bloques perdidos</div>
-          <p class="offers-empty-sub">Los bloques que alguien más capturó antes aparecerán aquí.</p>
+        <div id="tab-descartados" class="history-panel active">
+          <div class="offers-empty">
+            <div class="offers-empty-icon">🚫</div>
+            <div class="offers-empty-title">Sin bloques descartados</div>
+            <p class="offers-empty-sub">Aquí aparecerán los bloques que no cumplieron tus filtros de monto o ubicación.</p>
+          </div>
+        </div>
+        <div id="tab-perdidos" class="history-panel">
+          <div class="offers-empty">
+            <div class="offers-empty-icon">💨</div>
+            <div class="offers-empty-title">Sin bloques perdidos</div>
+            <p class="offers-empty-sub">Los bloques que alguien más capturó antes aparecerán aquí.</p>
+          </div>
         </div>
       </div>
 
@@ -839,12 +842,16 @@
     });
 
     // ===== HISTORY TABS =====
-    function setHistoryTab(el, panel) {
-      document.querySelectorAll('.history-tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.history-panel').forEach(p => p.classList.remove('active'));
+    function switchHistoryTab(el, panelId) {
+      // desactivar todos los tabs y panels dentro del mismo card
+      const card = el.closest('.card');
+      card.querySelectorAll('.history-tab').forEach(t => t.classList.remove('active'));
+      card.querySelectorAll('.history-panel').forEach(p => p.classList.remove('active'));
       el.classList.add('active');
-      document.getElementById('panel-' + panel).classList.add('active');
+      document.getElementById(panelId).classList.add('active');
     }
+    // alias legacy
+    function setHistoryTab(el, panel) { switchHistoryTab(el, panel); }
 
     // ONBOARDING
     let currentStep = 0;
